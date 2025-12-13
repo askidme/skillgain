@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2b1a9afa-8c80-463a-ae0a-5e39d9d054b1" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="skillgain" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="skillgain" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="skillgain" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Data Class" />
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Enum" />
+        <option value="Class" />
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="$USER_HOME$/.gradle/wrapper/dists/gradle-8.14-bin/38aieal9i53h9rfe7vjup95b9/gradle-8.14" javaHome="/opt/homebrew/Cellar/openjdk@21/21.0.6/libexec/openjdk.jdk/Contents/Home" gradleVersion="8.14" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="33OcQBSScIz8HAmVLynWz8wc4uT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.ArchitectureTest.config module should not depend on service module.executor": "Run",
+    "Gradle.ArchitectureTest.executor": "Run",
+    "Gradle.Build skillgain.executor": "Run",
+    "Gradle.BusinessExceptionTest.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "Gradle.ExceptionMessageResolverTest.executor": "Run",
+    "Gradle.ExceptionMessageResolverTest.resolveMessage returns expected string.executor": "Run",
+    "Gradle.ExceptionMessageResolverTest.should fallback to key when message not found.executor": "Debug",
+    "Gradle.ExceptionMessageResolverTest.should resolve localized message with argument.executor": "Run",
+    "Gradle.GlobalExceptionHandlerTest.executor": "Run",
+    "Gradle.GlobalExceptionHandlerTest.should fallback to generic bad request if exception type is unknown.executor": "Run",
+    "Gradle.GlobalExceptionHandlerTest.should handle BusinessException.executor": "Run",
+    "Gradle.GlobalExceptionHandlerTest.should handle access denied.executor": "Run",
+    "Gradle.GlobalExceptionHandlerTest.should handle not readable exception.executor": "Run",
+    "Gradle.GlobalExceptionHandlerTest.should handle unexpected exception.executor": "Run",
+    "Gradle.GlobalExceptionHandlerTest.should handle unsupported method.executor": "Run",
+    "Gradle.MessageResolverTest.executor": "Debug",
+    "Gradle.MessageResolverTest.getMessage returns message from source with default baseName.executor": "Debug",
+    "Gradle.MessageResolverTest.getMessage returns message from source with explicit locale.executor": "Debug",
+    "Gradle.MessageResolverTest.should return default message when key not found.executor": "Debug",
+    "Gradle.ProblemDetailBuilderTest.executor": "Run",
+    "Gradle.ProblemDetailBuilderTest.should build problem detail with ProblemType.executor": "Run",
+    "Gradle.ProblemDetailBuilderTest.should build problem detail with custom fields.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.noRequest.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create access denied problem detail.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create business problem detail when invalid user credentials.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create business problem detail when user not found.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create constraint violation problem.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create generic problem detail.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create method not allowed problem.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create missing parameter problem.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create type mismatch problem.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create unreadable request problem.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create unsupported media type problem.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should create validation problem.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should fallback to generic bad request.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.should resolve request uri.executor": "Run",
+    "Gradle.ProblemDetailFactoryTest.uriProvided.executor": "Run",
+    "Gradle.RequestContextProviderTest.executor": "Run",
+    "Gradle.skillgain [clean].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "Spring Boot.AppApplication.executor": "Debug",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/Idris.Askarov/Main/Projects/IdeaProjects/skillgain/domain/src/main/kotlin/net/skillgain/domain/auth",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/Users/Idris.Askarov/Main/Projects/IdeaProjects/skillgain/service/src/main/kotlin/Main.kt",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/domain/src/main/kotlin/net/skillgain/domain/auth" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="net.skillgain.common.message" />
+    </key>
+    <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
+      <recent name="net.skillgain.exception.problem" />
+      <recent name="net.skillgain.common.message" />
+      <recent name="net.skillgain.exception.model" />
+      <recent name="net.skillgain.exception.core" />
+      <recent name="net.skillgain.exception.user.handler" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.BusinessExceptionTest">
+    <configuration name="BusinessExceptionTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":exception:test" />
+            <option value="--tests" />
+            <option value="&quot;net.skillgain.exception.core.BusinessExceptionTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="ProblemDetailBuilderTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":exception:test" />
+            <option value="--tests" />
+            <option value="&quot;net.skillgain.exception.problem.ProblemDetailBuilderTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="ProblemDetailBuilderTest.should build problem detail with ProblemType" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":exception:test" />
+            <option value="--tests" />
+            <option value="&quot;net.skillgain.exception.problem.ProblemDetailBuilderTest.should build problem detail with ProblemType&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="ProblemDetailBuilderTest.should build problem detail with custom fields" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":exception:test" />
+            <option value="--tests" />
+            <option value="&quot;net.skillgain.exception.problem.ProblemDetailBuilderTest.should build problem detail with custom fields&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="RequestContextProviderTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":exception:test" />
+            <option value="--tests" />
+            <option value="&quot;net.skillgain.exception.problem.RequestContextProviderTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="AppApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="skillgain.app.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="net.skillgain.AppApplication" />
+      <option name="VM_PARAMETERS" value="-Djava.rmi.server.hostname=localhost" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.BusinessExceptionTest" />
+      <item itemvalue="Gradle.ProblemDetailBuilderTest" />
+      <item itemvalue="Gradle.ProblemDetailBuilderTest.should build problem detail with ProblemType" />
+      <item itemvalue="Gradle.ProblemDetailBuilderTest.should build problem detail with custom fields" />
+      <item itemvalue="Gradle.RequestContextProviderTest" />
+      <item itemvalue="Spring Boot.AppApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.BusinessExceptionTest" />
+        <item itemvalue="Gradle.RequestContextProviderTest" />
+        <item itemvalue="Gradle.ProblemDetailBuilderTest" />
+        <item itemvalue="Gradle.ProblemDetailBuilderTest.should build problem detail with custom fields" />
+        <item itemvalue="Gradle.ProblemDetailBuilderTest.should build problem detail with ProblemType" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2b1a9afa-8c80-463a-ae0a-5e39d9d054b1" name="Changes" comment="" />
+      <created>1759191540977</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1759191540977</updated>
+      <workItem from="1759191542365" duration="17992000" />
+      <workItem from="1759348638217" duration="37323000" />
+      <workItem from="1759953520363" duration="20818000" />
+      <workItem from="1760049026921" duration="6372000" />
+      <workItem from="1760124338117" duration="15638000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/security/src/main/kotlin/net/skillgain/security/auth/UserDetailsServiceImpl.kt</url>
+          <line>15</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/main/kotlin/net/skillgain/exception/util/ExceptionMessageResolver.kt</url>
+          <line>10</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/common/src/main/kotlin/net/skillgain/common/i18n/MessageConfig.kt</url>
+          <line>12</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/common/src/main/kotlin/net/skillgain/common/i18n/MessageConfig.kt</url>
+          <line>21</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/common/src/main/kotlin/net/skillgain/common/i18n/MessageResolver.kt</url>
+          <line>35</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/problem/ProblemDetailFactoryTest.kt</url>
+          <line>212</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/problem/ProblemDetailFactoryTest.kt</url>
+          <line>239</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/problem/ProblemDetailFactoryTest.kt</url>
+          <line>259</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/problem/ProblemDetailFactoryTest.kt</url>
+          <line>303</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/problem/ProblemDetailFactoryTest.kt</url>
+          <line>327</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/problem/ProblemDetailFactoryTest.kt</url>
+          <line>122</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/main/kotlin/net/skillgain/exception/problem/ProblemDetailFactory.kt</url>
+          <line>182</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/handler/GlobalExceptionHandlerTest.kt</url>
+          <line>68</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/handler/GlobalExceptionHandlerTest.kt</url>
+          <line>101</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/handler/GlobalExceptionHandlerTest.kt</url>
+          <line>118</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/handler/GlobalExceptionHandlerTest.kt</url>
+          <line>141</line>
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/exception/src/test/kotlin/net/skillgain/exception/handler/GlobalExceptionHandlerTest.kt</url>
+          <line>282</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

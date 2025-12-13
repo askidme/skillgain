@@ -1,0 +1,30 @@
+rootProject.name = "skillgain"
+
+include(
+    "app",
+    "api",
+    "bpmn",
+    "config",
+    "domain",
+    "service",
+    "ai",
+    "persistence",
+    "migration",
+    "exception",
+    "security",
+    "observability",
+    "common"
+)
+include("api")
+include("service")
+include("ai")
+include("bpmn")
+include("domain")
+include("persistence")
+include("migration")
+include("config")
+include("exception")
+include("security")
+include("observability")
+include("common")
+include("cache")
