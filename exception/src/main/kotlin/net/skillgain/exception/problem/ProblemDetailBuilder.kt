@@ -5,6 +5,7 @@ import net.skillgain.exception.model.ProblemType
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.stereotype.Component
+import java.net.URI
 import java.time.Instant
 
 @Component
@@ -19,10 +20,11 @@ class ProblemDetailBuilder(
         additionalProperties: Map<String, Any> = emptyMap()
     ): ProblemDetail {
         val detail = messageResolver.getMessage(problemType.messageKey, messageArgs)
+        val title = messageResolver.getMessage(problemType.titleKey, messageArgs)
         return build(
             status = status,
-            type = problemType.type,
-            title = problemType.title,
+            code = problemType.toString(),
+            title = title,
             detail = detail,
             additionalProperties = additionalProperties
         )
@@ -30,26 +32,38 @@ class ProblemDetailBuilder(
 
     fun build(
         status: HttpStatus,
-        type: String,
+        code: String,
         title: String,
         detail: String,
         additionalProperties: Map<String, Any> = emptyMap()
     ): ProblemDetail {
         val problemDetail = ProblemDetail.forStatusAndDetail(status, detail)
-        problemDetail.type = null
+
+        problemDetail.type = URI.create("urn:problem:$code")
         problemDetail.title = title
         problemDetail.instance = contextProvider.getRequestUri()
-        problemDetail.setProperty("code", type)
+        problemDetail.setProperty("code", code)
         problemDetail.setProperty("timestamp", Instant.now())
+        problemDetail.setProperty("traceId", "TRACE_NOT_AVAILABLE_YET")
 
         contextProvider.getExecutionContext().forEach { (key, value) ->
             problemDetail.setProperty(key, value)
         }
 
         additionalProperties.forEach { (key, value) ->
-            problemDetail.setProperty(key, value)
+            problemDetail.setProperty(key, sanitizeMessage(value))
         }
 
         return problemDetail
+    }
+
+    private fun sanitizeMessage(message: Any?): String {
+        return message.toString()
+            ?.substringBefore(" at ")
+            ?.substringBefore("\n")
+            ?.replace(Regex("net\\.skillgain\\.[\\w\\.]+"), "")
+            ?.replace(Regex("\\s+"), " ")
+            ?.take(200)
+            ?: "Invalid request body"
     }
 }

@@ -8,7 +8,7 @@ object VerificationHelper {
     fun assertCommonProperties(detail: ProblemDetail, code: String, method: String = "GET") {
         assertThat(detail.properties)
             .containsEntry("code", code)
-            .containsEntry("type", "web")
+            .containsEntry("executionType", "web")
             .containsEntry("method", method)
             .containsKey("timestamp")
     }

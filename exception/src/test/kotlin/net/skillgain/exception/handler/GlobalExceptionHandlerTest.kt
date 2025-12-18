@@ -6,6 +6,8 @@ import net.skillgain.common.i18n.MessageConfig
 import net.skillgain.common.i18n.MessageResolver
 import net.skillgain.exception.VerificationHelper.assertCommonProperties
 import net.skillgain.exception.core.BusinessException
+import net.skillgain.exception.domain.user.UserExceptionCode
+import net.skillgain.exception.model.ProblemType
 import net.skillgain.exception.problem.ProblemDetailBuilder
 import net.skillgain.exception.problem.ProblemDetailFactory
 import net.skillgain.exception.problem.RequestContextProvider
@@ -67,26 +69,27 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
-        assertThat(result.body?.title).isEqualTo("Internal Server Error")
+        assertThat(result.body?.title).isEqualTo("Internal server error")
         assertThat(result.body?.status).isEqualTo(500)
         assertThat(result.body?.detail).isEqualTo("An unexpected error occurred. Please try again later.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "internal-server-error")
+        assertCommonProperties(result.body!!, ProblemType.INTERNAL_SERVER_ERROR.toString())
     }
 
     @Test
     fun `should handle BusinessException`() {
         val ex = object : BusinessException(
-            messageKey = "exception.user.invalid_credentials",
-            errorCode = "INVALID-CREDENTIALS",
+            messageKey = "exception.user.invalid_credentials.detail",
+            titleKey = "exception.user.invalid_credentials.title",
+            errorCode = UserExceptionCode.INVALID_USER_CREDENTIALS,
             status = HttpStatus.UNAUTHORIZED
         ) {}
 
         val result = sut.handleBusinessException(ex)
 
         assertThat(result.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
-        assertThat(result.body?.title).isEqualTo("Invalid Credentials")
-        assertThat(result.body?.detail).isEqualTo("Invalid username or password")
+        assertThat(result.body?.title).isEqualTo("Invalid credentials")
+        assertThat(result.body?.detail).isEqualTo("The email or password provided is incorrect.")
     }
 
     @Test
@@ -100,11 +103,11 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.FORBIDDEN)
-        assertThat(result.body?.title).isEqualTo("Access Denied")
+        assertThat(result.body?.title).isEqualTo("Access denied")
         assertThat(result.body?.status).isEqualTo(403)
-        assertThat(result.body?.detail).isEqualTo("You do not have permission to access this resource")
+        assertThat(result.body?.detail).isEqualTo("You do not have permission to access this resource.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "access-denied")
+        assertCommonProperties(result.body!!, ProblemType.ACCESS_DENIED.toString())
     }
 
     @Test
@@ -117,11 +120,11 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED)
-        assertThat(result.body?.title).isEqualTo("Method Not Allowed")
+        assertThat(result.body?.title).isEqualTo("Method not allowed")
         assertThat(result.body?.status).isEqualTo(405)
-        assertThat(result.body?.detail).isEqualTo("HTTP method POST is not supported for this endpoint. Supported messages are [GET]")
+        assertThat(result.body?.detail).isEqualTo("HTTP method POST is not supported. Supported methods are [GET].")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "method-not-allowed", "POST")
+        assertCommonProperties(result.body!!, ProblemType.METHOD_NOT_ALLOWED.toString(), "POST")
         assertThat(result.body?.properties).containsEntry("supportedMethods", "GET")
     }
 
@@ -139,11 +142,11 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(result.body?.title).isEqualTo("Invalid Request Body")
+        assertThat(result.body?.title).isEqualTo("Invalid request body")
         assertThat(result.body?.status).isEqualTo(400)
-        assertThat(result.body?.detail).isEqualTo("Request body is malformed or contains invalid data")
+        assertThat(result.body?.detail).isEqualTo("Request body is malformed or contains invalid data.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "invalid-request-body")
+        assertCommonProperties(result.body!!, ProblemType.INVALID_REQUEST_BODY.toString())
         assertThat(result.body?.properties).containsEntry("hint", "Malformed")
     }
 
@@ -157,11 +160,11 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(result.body?.title).isEqualTo("Missing Parameter")
+        assertThat(result.body?.title).isEqualTo("Missing parameter")
         assertThat(result.body?.status).isEqualTo(400)
-        assertThat(result.body?.detail).isEqualTo("Required request parameter username is missing")
+        assertThat(result.body?.detail).isEqualTo("Required request parameter username is missing.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "missing-parameter", "GET")
+        assertCommonProperties(result.body!!, ProblemType.MISSING_PARAMETER.toString(), "GET")
         assertThat(result.body?.properties)
             .containsEntry("parameterName", "username")
             .containsEntry("parameterType", "String")
@@ -177,11 +180,11 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(result.body?.title).isEqualTo("Type Mismatch")
+        assertThat(result.body?.title).isEqualTo("Invalid parameter type")
         assertThat(result.body?.status).isEqualTo(400)
-        assertThat(result.body?.detail).isEqualTo("Invalid type for parameter userId: expected long")
+        assertThat(result.body?.detail).isEqualTo("Invalid type for parameter userId: expected long.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "type-mismatch", "GET")
+        assertCommonProperties(result.body!!, ProblemType.TYPE_MISMATCH.toString(), "GET")
         assertThat(result.body?.properties)
             .containsEntry("parameter", "userId")
             .containsEntry("expectedType", "long")
@@ -200,12 +203,12 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-        assertThat(result.body?.title).isEqualTo("Unsupported Media Type")
+        assertThat(result.body?.title).isEqualTo("Unsupported media type")
         assertThat(result.body?.status).isEqualTo(415)
         assertThat(result.body?.detail)
-            .isEqualTo("The media type application/xml is not supported. Supported media types are [application/json]")
+            .isEqualTo("The media type application/xml is not supported. Supported media types are [application/json].")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "unsupported-media-type", "GET")
+        assertCommonProperties(result.body!!, ProblemType.UNSUPPORTED_MEDIA_TYPE.toString(), "GET")
         assertThat(result.body?.properties)
             .containsEntry("contentType", "application/xml")
             .containsEntry("supportedMediaTypes", "application/json")
@@ -224,11 +227,11 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(result.body?.title).isEqualTo("Validation Error")
+        assertThat(result.body?.title).isEqualTo("Validation error")
         assertThat(result.body?.status).isEqualTo(400)
-        assertThat(result.body?.detail).isEqualTo("Validation failed for one or more fields")
+        assertThat(result.body?.detail).isEqualTo("Validation failed for one or more fields.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "validation-error", "GET")
+        assertCommonProperties(result.body!!, ProblemType.VALIDATION_ERROR.toString(), "GET")
         assertThat(result.body?.properties)
             .containsEntry("errorCount", 1)
     }
@@ -260,11 +263,11 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(result.body?.title).isEqualTo("Constraint Violation")
+        assertThat(result.body?.title).isEqualTo("Constraint violation")
         assertThat(result.body?.status).isEqualTo(400)
-        assertThat(result.body?.detail).isEqualTo("Constraint violation in request parameters")
+        assertThat(result.body?.detail).isEqualTo("One or more request parameters violate constraints.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "constraint-violation", "GET")
+        assertCommonProperties(result.body!!, ProblemType.CONSTRAINT_VIOLATION.toString(), "GET")
         assertThat(result.body?.properties).containsEntry("errorCount", 1)
     }
 
@@ -278,10 +281,10 @@ class GlobalExceptionHandlerTest {
 
         // Assert
         assertThat(result.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(result.body?.title).isEqualTo("Bad Request")
+        assertThat(result.body?.title).isEqualTo("Bad request")
         assertThat(result.body?.status).isEqualTo(400)
-        assertThat(result.body?.detail).isEqualTo("The request could not be processed")
+        assertThat(result.body?.detail).isEqualTo("The request could not be processed.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, "bad-request")
+        assertCommonProperties(result.body!!, ProblemType.BAD_REQUEST.toString())
     }
 }

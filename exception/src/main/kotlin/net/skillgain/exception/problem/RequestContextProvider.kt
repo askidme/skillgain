@@ -22,11 +22,11 @@ class RequestContextProvider(
         val type = ExecutionContextType.from(hasHttpRequest())
         return if (hasHttpRequest()) {
             mapOf(
-                "type" to type.code,
+                "executionType" to type.code,
                 "method" to requestProvider.`object`.method
             )
         } else {
-            mapOf("type" to type.code)
+            mapOf("executionType" to type.code)
         }
     }
 

@@ -1,59 +1,48 @@
 package net.skillgain.exception.model
 
 enum class ProblemType(
-    val type: String,
-    val title: String,
+    val titleKey: String,
     val messageKey: String
 ) {
     INTERNAL_SERVER_ERROR(
-        "internal-server-error",
-        "Internal Server Error",
-        "exception.generic.internal_server_error"
+        "exception.generic.internal_server_error.title",
+        "exception.generic.internal_server_error.detail"
     ),
     VALIDATION_ERROR(
-        "validation-error",
-        "Validation Error",
-        "exception.request.validation_error"
+        "exception.request.validation_error.title",
+        "exception.request.validation_error.detail"
     ),
     CONSTRAINT_VIOLATION(
-        "constraint-violation",
-        "Constraint Violation",
-        "exception.request.constraint_violation"
+        "exception.request.constraint_violation.title",
+        "exception.request.constraint_violation.detail"
     ),
     INVALID_REQUEST_BODY(
-        "invalid-request-body",
-        "Invalid Request Body",
-        "exception.request.invalid_request_body"
+        "exception.request.invalid_request_body.title",
+        "exception.request.invalid_request_body.detail"
     ),
     MISSING_PARAMETER(
-        "missing-parameter",
-        "Missing Parameter",
-        "exception.request.missing_parameter"
+        "exception.request.missing_parameter.title",
+        "exception.request.missing_parameter.detail"
     ),
     TYPE_MISMATCH(
-        "type-mismatch",
-        "Type Mismatch",
-        "exception.request.type_mismatch"
+        "exception.request.type_mismatch.title",
+        "exception.request.type_mismatch.detail"
     ),
     METHOD_NOT_ALLOWED(
-        "method-not-allowed",
-        "Method Not Allowed",
-        messageKey = "exception.request.method_not_allowed"
+        "exception.request.method_not_allowed.title",
+        "exception.request.method_not_allowed.detail"
     ),
     UNSUPPORTED_MEDIA_TYPE(
-        "unsupported-media-type",
-        "Unsupported Media Type",
-        "exception.request.unsupported_media_type"
+        "exception.request.unsupported_media_type.title",
+        "exception.request.unsupported_media_type.detail"
     ),
 
     ACCESS_DENIED(
-        "access-denied",
-        "Access Denied",
-        "exception.request.access_denied"
+        "exception.request.access_denied.title",
+        "exception.request.access_denied.detail"
     ),
-    BAD_REQUEST_GEN(
-        "bad-request",
-        "Bad Request",
-        "exception.request.bad_request"
+    BAD_REQUEST(
+        "exception.request.bad_request.title",
+        "exception.request.bad_request.detail"
     )
 }

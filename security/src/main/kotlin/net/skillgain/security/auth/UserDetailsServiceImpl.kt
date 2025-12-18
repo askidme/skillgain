@@ -1,6 +1,6 @@
 package net.skillgain.security.auth
 
-import net.skillgain.persistence.repository.UserRepository
+import net.skillgain.persistence.repository.user.UserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service
 class UserDetailsServiceImpl(
     private val userRepository: UserRepository
 ) : UserDetailsService {
-    override fun loadUserByUsername(username: String): UserDetails {
-        val user = userRepository.findByUsername(username)
+    override fun loadUserByUsername(email: String): UserDetails {
+        val user = userRepository.findByEmail(email)
             ?: throw UsernameNotFoundException("User not found")
 
         return User(
-            user.username,
+            user.email,
             user.password,
             listOf(SimpleGrantedAuthority("ROLE_${user.role.name}"))
         )

@@ -2,7 +2,7 @@ package net.skillgain.security.jwt
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
-import net.skillgain.domain.model.User
+import net.skillgain.domain.entity.user.User
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.Date
@@ -16,7 +16,7 @@ class JwtService(
     private val key = Keys.hmacShaKeyFor(secret.toByteArray())
 
     fun generateToken(user: User): String = Jwts.builder()
-        .setSubject(user.username)
+        .setSubject(user.email)
         .claim("role", user.role.name)
         .setIssuedAt(Date())
         .setExpiration(Date(System.currentTimeMillis() + expirationMs))

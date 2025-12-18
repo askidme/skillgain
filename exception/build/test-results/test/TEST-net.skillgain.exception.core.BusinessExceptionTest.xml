@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="net.skillgain.exception.core.BusinessExceptionTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-10-10T23:15:02.542Z" hostname="MAC-CD2LLF34C4" time="0.032">
-  <properties/>
-  <testcase name="should retain properties correctly()" classname="net.skillgain.exception.core.BusinessExceptionTest" time="0.032"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

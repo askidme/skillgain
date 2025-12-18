@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus
 
 class InvalidUserCredentialsException : BusinessException(
     status = HttpStatus.UNAUTHORIZED,
-    errorCode = "INVALID-USER-CREDENTIALS",
-    messageKey = "exception.user.invalid_credentials"
+    errorCode = UserExceptionCode.INVALID_USER_CREDENTIALS,
+    messageKey = "exception.user.invalid_credentials.detail",
+    titleKey = "exception.user.invalid_credentials.title"
 )

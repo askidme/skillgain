@@ -14,7 +14,7 @@ class RequestContextProviderTest {
 
         // Arrange
         val mockRequest = MockHttpServletRequest().apply { requestURI = "/api/test" }
-        val provider = RequestContextProvider(ObjectFactory { mockRequest })
+        val provider = RequestContextProvider { mockRequest }
 
         // Act
         val uri = provider.getRequestUri()
@@ -34,7 +34,7 @@ class RequestContextProviderTest {
         val context = provider.getExecutionContext()
 
         // Assert
-        assertThat(context).containsEntry("type", ExecutionContextType.WEB.code)
+        assertThat(context).containsEntry("executionType", ExecutionContextType.WEB.code)
         assertThat(context).containsEntry("method", "POST")
     }
 
@@ -65,6 +65,6 @@ class RequestContextProviderTest {
         val context = provider.getExecutionContext()
 
         // Assert
-        assertThat(context).containsEntry("type", ExecutionContextType.SYSTEM.code)
+        assertThat(context).containsEntry("executionType", ExecutionContextType.SYSTEM.code)
     }
 }

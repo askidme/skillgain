@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":persistence"))
+    implementation(project(":repository"))
     implementation(project(":ai"))
     implementation(project(":security"))
     implementation(project(":config"))

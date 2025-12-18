@@ -30,13 +30,14 @@ class ProblemDetailFactory(
     }
 
     fun businessProblem(ex: BusinessException): ProblemDetail {
-        val message = messageResolver.getMessage(ex.messageKey, ex.messageArgs)
 
+        val message = ex.messageKey?.let { messageResolver.getMessage(it, ex.messageArgs) } ?: ""
+        val title = ex.titleKey?.let { messageResolver.getMessage(ex.titleKey) } ?: ""
         return builder.build(
             status = ex.status,
             detail = message,
-            type = ex.errorCode.lowercase(),
-            title = formatTitle(ex.errorCode),
+            code = ex.errorCode.toString(),
+            title = title,
             additionalProperties = ex.getProperties()
         )
     }
@@ -164,7 +165,7 @@ class ProblemDetailFactory(
 
         return builder.build(
             status = HttpStatus.BAD_REQUEST,
-            problemType = ProblemType.BAD_REQUEST_GEN
+            problemType = ProblemType.BAD_REQUEST
         )
     }
 
@@ -176,12 +177,5 @@ class ProblemDetailFactory(
             ?.substringBefore("\n")
             ?.take(200) // Limit length
             ?: "Invalid format"
-    }
-
-
-    private fun formatTitle(errorCode: String): String {
-        return errorCode.split("-").joinToString(" ") {
-            it.lowercase().replaceFirstChar(Char::uppercaseChar)
-        }
     }
 }

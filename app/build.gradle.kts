@@ -24,7 +24,7 @@ dependencies {
     implementation(project(":bpmn"))
     implementation(project(":service"))
     implementation(project(":ai"))
-    implementation(project(":persistence"))
+    implementation(project(":repository"))
     implementation(project(":migration"))
     implementation(project(":domain"))
     implementation(project(":config"))

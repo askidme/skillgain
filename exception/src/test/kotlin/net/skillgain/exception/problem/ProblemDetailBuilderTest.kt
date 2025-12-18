@@ -39,14 +39,14 @@ class ProblemDetailBuilderTest {
     fun `should build problem detail with ProblemType`() {
 
         //Act
-        val detail = sut.build(status = HttpStatus.BAD_REQUEST,problemType = ProblemType.BAD_REQUEST_GEN)
+        val detail = sut.build(status = HttpStatus.BAD_REQUEST,problemType = ProblemType.BAD_REQUEST)
 
         //Assert
         assertThat(detail.status).isEqualTo(400)
-        assertThat(detail.title).isEqualTo("Bad Request")
-        assertThat(detail.detail).isEqualTo("The request could not be processed")
+        assertThat(detail.title).isEqualTo("Bad request")
+        assertThat(detail.detail).isEqualTo("The request could not be processed.")
         assertThat(detail.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(detail, "bad-request")
+        assertCommonProperties(detail, ProblemType.BAD_REQUEST.toString())
     }
 
     @Test
@@ -55,7 +55,7 @@ class ProblemDetailBuilderTest {
         //Act
         val detail = sut.build(
             status = HttpStatus.UNAUTHORIZED,
-            type = "unauthorized-access",
+            code = "UNAUTHORIZED_ACCESS",
             title = "Unauthorized",
             detail = "User token is invalid",
             additionalProperties = mapOf("hint" to "Check the token")
@@ -66,7 +66,7 @@ class ProblemDetailBuilderTest {
         assertThat(detail.title).isEqualTo("Unauthorized")
         assertThat(detail.detail).isEqualTo("User token is invalid")
         assertThat(detail.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(detail, "unauthorized-access")
+        assertCommonProperties(detail, "UNAUTHORIZED_ACCESS")
         assertThat(detail.properties["hint"]).isEqualTo("Check the token")
     }
 }
