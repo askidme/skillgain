@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":repository"))
+    implementation(project(":persistence"))
     testImplementation(kotlin("test"))
 }
 

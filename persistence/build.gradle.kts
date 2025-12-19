@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "net.skillgain"
-version = "repository"
+version = "persistence"
 
 repositories {
     mavenCentral()
@@ -18,6 +18,10 @@ dependencies {
     implementation(project(":observability"))
     implementation(project(":common"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.postgresql:postgresql")
+    implementation("org.flywaydb:flyway-core:9.22.3")
+    implementation("org.flywaydb:flyway-database-postgresql")
+
     testImplementation(kotlin("test"))
 }
 

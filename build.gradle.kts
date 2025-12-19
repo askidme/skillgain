@@ -25,10 +25,12 @@ subprojects {
             mavenBom("org.springframework.boot:spring-boot-dependencies:3.5.6")
         }
     }
+    val archunitVersion = "1.2.1"
+    val kotlinMockitoVersion = "5.2.1"
+    val mockitoVersion = "5.2.0"
+    val postgresVersion = "42.7.3"
+
     dependencies {
-        val archunitVersion = "1.2.1"
-        val kotlinMockitoVersion = "5.2.1"
-        val mockitoVersion = "5.2.0"
 
         "testImplementation"("com.tngtech.archunit:archunit:$archunitVersion")
         "testImplementation"("org.springframework.boot:spring-boot-starter-test")
@@ -36,6 +38,8 @@ subprojects {
         "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
         "testImplementation"("org.mockito.kotlin:mockito-kotlin:$kotlinMockitoVersion")
         "testImplementation"("org.mockito:mockito-core:$mockitoVersion")
+        "implementation"("org.postgresql:postgresql:$postgresVersion")
+
     }
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions.jvmTarget = "21"

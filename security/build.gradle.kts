@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":repository"))
+    implementation(project(":persistence"))
     implementation(project(":config"))
     implementation(project(":exception"))
     implementation(project(":observability"))

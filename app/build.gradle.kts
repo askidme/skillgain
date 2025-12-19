@@ -24,7 +24,7 @@ dependencies {
     implementation(project(":bpmn"))
     implementation(project(":service"))
     implementation(project(":ai"))
-    implementation(project(":repository"))
+    implementation(project(":persistence"))
     implementation(project(":migration"))
     implementation(project(":domain"))
     implementation(project(":config"))
@@ -35,7 +35,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    runtimeOnly("com.h2database:h2")
 }
 
 

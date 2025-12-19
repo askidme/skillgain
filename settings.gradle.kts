@@ -8,7 +8,7 @@ include(
     "domain",
     "service",
     "ai",
-    "repository",
+    "persistence",
     "migration",
     "exception",
     "security",
@@ -20,7 +20,7 @@ include("service")
 include("ai")
 include("bpmn")
 include("domain")
-include("repository")
+include("persistence")
 include("migration")
 include("config")
 include("exception")
