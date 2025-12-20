@@ -20,10 +20,19 @@ CREATE TABLE users (
                        phone VARCHAR(50),
                        birth_date DATE,
                        profile_picture VARCHAR(512),
-                       role VARCHAR(50) NOT NULL,
-
+                       user_role VARCHAR(50) NOT NULL,
+                       created_at TIMESTAMP NOT NULL DEFAULT now(),
+                       updated_at TIMESTAMP NOT NULL DEFAULT now(),
+                       created_by BIGINT,
+                       updated_by BIGINT,
+                       CONSTRAINT chk_users_role
+                           CHECK (user_role IN ('STUDENT','INSTRUCTOR','ADMIN')),
                        CONSTRAINT pk_users PRIMARY KEY (id),
-                       CONSTRAINT uq_users_email UNIQUE (email)
+                       CONSTRAINT uq_users_email UNIQUE (email),
+                       CONSTRAINT fk_users_created_by
+                           FOREIGN KEY (created_by) REFERENCES users(id),
+                       CONSTRAINT fk_users_updated_by
+                           FOREIGN KEY (updated_by) REFERENCES users(id)
 );
 
 -- ===============================

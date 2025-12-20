@@ -73,7 +73,7 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.status).isEqualTo(500)
         assertThat(result.body?.detail).isEqualTo("An unexpected error occurred. Please try again later.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.INTERNAL_SERVER_ERROR.toString())
+        assertCommonProperties(result.body!!, ProblemType.INTERNAL_SERVER_ERROR.name)
     }
 
     @Test
@@ -107,7 +107,7 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.status).isEqualTo(403)
         assertThat(result.body?.detail).isEqualTo("You do not have permission to access this resource.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.ACCESS_DENIED.toString())
+        assertCommonProperties(result.body!!, ProblemType.ACCESS_DENIED.name)
     }
 
     @Test
@@ -124,7 +124,7 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.status).isEqualTo(405)
         assertThat(result.body?.detail).isEqualTo("HTTP method POST is not supported. Supported methods are [GET].")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.METHOD_NOT_ALLOWED.toString(), "POST")
+        assertCommonProperties(result.body!!, ProblemType.METHOD_NOT_ALLOWED.name, "POST")
         assertThat(result.body?.properties).containsEntry("supportedMethods", "GET")
     }
 
@@ -146,7 +146,7 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.status).isEqualTo(400)
         assertThat(result.body?.detail).isEqualTo("Request body is malformed or contains invalid data.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.INVALID_REQUEST_BODY.toString())
+        assertCommonProperties(result.body!!, ProblemType.INVALID_REQUEST_BODY.name)
         assertThat(result.body?.properties).containsEntry("hint", "Malformed")
     }
 
@@ -164,7 +164,7 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.status).isEqualTo(400)
         assertThat(result.body?.detail).isEqualTo("Required request parameter username is missing.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.MISSING_PARAMETER.toString(), "GET")
+        assertCommonProperties(result.body!!, ProblemType.MISSING_PARAMETER.name, "GET")
         assertThat(result.body?.properties)
             .containsEntry("parameterName", "username")
             .containsEntry("parameterType", "String")
@@ -184,7 +184,7 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.status).isEqualTo(400)
         assertThat(result.body?.detail).isEqualTo("Invalid type for parameter userId: expected long.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.TYPE_MISMATCH.toString(), "GET")
+        assertCommonProperties(result.body!!, ProblemType.TYPE_MISMATCH.name, "GET")
         assertThat(result.body?.properties)
             .containsEntry("parameter", "userId")
             .containsEntry("expectedType", "long")
@@ -208,7 +208,7 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.detail)
             .isEqualTo("The media type application/xml is not supported. Supported media types are [application/json].")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.UNSUPPORTED_MEDIA_TYPE.toString(), "GET")
+        assertCommonProperties(result.body!!, ProblemType.UNSUPPORTED_MEDIA_TYPE.name, "GET")
         assertThat(result.body?.properties)
             .containsEntry("contentType", "application/xml")
             .containsEntry("supportedMediaTypes", "application/json")
@@ -231,7 +231,7 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.status).isEqualTo(400)
         assertThat(result.body?.detail).isEqualTo("Validation failed for one or more fields.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.VALIDATION_ERROR.toString(), "GET")
+        assertCommonProperties(result.body!!, ProblemType.VALIDATION_ERROR.name, "GET")
         assertThat(result.body?.properties)
             .containsEntry("errorCount", 1)
     }
@@ -267,7 +267,7 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.status).isEqualTo(400)
         assertThat(result.body?.detail).isEqualTo("One or more request parameters violate constraints.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.CONSTRAINT_VIOLATION.toString(), "GET")
+        assertCommonProperties(result.body!!, ProblemType.CONSTRAINT_VIOLATION.name, "GET")
         assertThat(result.body?.properties).containsEntry("errorCount", 1)
     }
 
@@ -285,6 +285,6 @@ class GlobalExceptionHandlerTest {
         assertThat(result.body?.status).isEqualTo(400)
         assertThat(result.body?.detail).isEqualTo("The request could not be processed.")
         assertThat(result.body?.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(result.body!!, ProblemType.BAD_REQUEST.toString())
+        assertCommonProperties(result.body!!, ProblemType.BAD_REQUEST.name)
     }
 }

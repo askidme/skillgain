@@ -19,7 +19,7 @@ class UserDetailsServiceImpl(
         return User(
             user.email,
             user.password,
-            listOf(SimpleGrantedAuthority("ROLE_${user.role.name}"))
+            listOf(SimpleGrantedAuthority("ROLE_${user.userRole.name}"))
         )
     }
 }

@@ -46,7 +46,7 @@ class ProblemDetailBuilderTest {
         assertThat(detail.title).isEqualTo("Bad request")
         assertThat(detail.detail).isEqualTo("The request could not be processed.")
         assertThat(detail.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(detail, ProblemType.BAD_REQUEST.toString())
+        assertCommonProperties(detail, ProblemType.BAD_REQUEST.name)
     }
 
     @Test

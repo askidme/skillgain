@@ -91,8 +91,8 @@ class ProblemDetailFactoryTest {
         assertThat(detail.title).isEqualTo("Internal server error")
         assertThat(detail.detail).isEqualTo("An unexpected error occurred. Please try again later.")
         assertThat(detail.instance.toString()).isEqualTo("/api/test")
-        assertCommonProperties(detail, ProblemType.INTERNAL_SERVER_ERROR.toString())
-        assertThat(detail.properties).containsEntry("code", ProblemType.INTERNAL_SERVER_ERROR.toString())
+        assertCommonProperties(detail, ProblemType.INTERNAL_SERVER_ERROR.name)
+        assertThat(detail.properties).containsEntry("code", ProblemType.INTERNAL_SERVER_ERROR.name)
     }
 
     @Test
@@ -109,7 +109,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.title).isEqualTo("User not found")
         assertThat(detail.instance.toString()).isEqualTo("/api/test")
         assertThat(detail.detail).isEqualTo("User with id 123 not found.")
-        assertCommonProperties(detail, UserExceptionCode.USER_NOT_FOUND.toString())
+        assertCommonProperties(detail, UserExceptionCode.USER_NOT_FOUND.name)
     }
 
     @Test
@@ -126,7 +126,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.title).isEqualTo("Invalid credentials")
         assertThat(detail.instance.toString()).isEqualTo("/api/test")
         assertThat(detail.detail).isEqualTo("The email or password provided is incorrect.")
-        assertCommonProperties(detail, UserExceptionCode.INVALID_USER_CREDENTIALS.toString())
+        assertCommonProperties(detail, UserExceptionCode.INVALID_USER_CREDENTIALS.name)
     }
 
     @Test
@@ -139,7 +139,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(403)
         assertThat(detail.title).isEqualTo("Access denied")
         assertThat(detail.detail).isEqualTo("You do not have permission to access this resource.")
-        assertCommonProperties(detail, ProblemType.ACCESS_DENIED.toString())
+        assertCommonProperties(detail, ProblemType.ACCESS_DENIED.name)
     }
 
     @Test
@@ -155,7 +155,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(405)
         assertThat(detail.title).isEqualTo("Method not allowed")
         assertThat(detail.detail).isEqualTo("HTTP method POST is not supported. Supported methods are [GET, PUT].")
-        assertCommonProperties(detail, ProblemType.METHOD_NOT_ALLOWED.toString(), "POST")
+        assertCommonProperties(detail, ProblemType.METHOD_NOT_ALLOWED.name, "POST")
         assertThat(detail.properties)
             .containsEntry("supportedMethods", "GET, PUT")
     }
@@ -175,7 +175,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(415)
         assertThat(detail.title).isEqualTo("Unsupported media type")
         assertThat(detail.detail).isEqualTo("The media type application/xml is not supported. Supported media types are [application/json, application/problem+json].")
-        assertCommonProperties(detail, ProblemType.UNSUPPORTED_MEDIA_TYPE.toString())
+        assertCommonProperties(detail, ProblemType.UNSUPPORTED_MEDIA_TYPE.name)
         assertThat(detail.properties)
             .containsEntry("contentType", "application/xml")
             .containsEntry("supportedMediaTypes", "application/json, application/problem+json")
@@ -194,7 +194,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(400)
         assertThat(detail.title).isEqualTo("Missing parameter")
         assertThat(detail.detail).isEqualTo("Required request parameter username is missing.")
-        assertCommonProperties(detail, ProblemType.MISSING_PARAMETER.toString())
+        assertCommonProperties(detail, ProblemType.MISSING_PARAMETER.name)
         assertThat(detail.properties)
             .containsEntry("parameterName", "username")
             .containsEntry("parameterType", "String")
@@ -213,7 +213,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(400)
         assertThat(detail.title).isEqualTo("Invalid parameter type")
         assertThat(detail.detail).isEqualTo("Invalid type for parameter userId: expected long.")
-        assertCommonProperties(detail, ProblemType.TYPE_MISMATCH.toString())
+        assertCommonProperties(detail, ProblemType.TYPE_MISMATCH.name)
         assertThat(detail.properties)
             .containsEntry("parameter", "userId")
             .containsEntry("rejectedValue", "string")
@@ -240,7 +240,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(400)
         assertThat(detail.title).isEqualTo("Invalid request body")
         assertThat(detail.detail).isEqualTo("Request body is malformed or contains invalid data.")
-        assertCommonProperties(detail, ProblemType.INVALID_REQUEST_BODY.toString())
+        assertCommonProperties(detail, ProblemType.INVALID_REQUEST_BODY.name)
         assertThat(detail.properties).containsEntry("hint", "JSON parse error")
     }
 
@@ -260,7 +260,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(400)
         assertThat(detail.title).isEqualTo("Validation error")
         assertThat(detail.detail).isEqualTo("Validation failed for one or more fields.")
-        assertCommonProperties(detail, ProblemType.VALIDATION_ERROR.toString())
+        assertCommonProperties(detail, ProblemType.VALIDATION_ERROR.name)
         assertThat(detail.properties)
             .containsEntry("errorCount", 1)
             .containsEntry(
@@ -304,7 +304,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(400)
         assertThat(detail.title).isEqualTo("Constraint violation")
         assertThat(detail.detail).isEqualTo("One or more request parameters violate constraints.")
-        assertCommonProperties(detail, ProblemType.CONSTRAINT_VIOLATION.toString())
+        assertCommonProperties(detail, ProblemType.CONSTRAINT_VIOLATION.name)
         assertThat(detail.properties)
             .containsEntry("errorCount", 1)
             .containsEntry(
@@ -328,6 +328,6 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(400)
         assertThat(detail.title).isEqualTo("Bad request")
         assertThat(detail.detail).isEqualTo("The request could not be processed.")
-        assertCommonProperties(detail, ProblemType.BAD_REQUEST.toString())
+        assertCommonProperties(detail, ProblemType.BAD_REQUEST.name)
     }
 }

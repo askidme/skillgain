@@ -1,18 +1,15 @@
 package net.skillgain.service.user
 
 
+import net.skillgain.domain.entity.user.User
 import net.skillgain.domain.model.user.AuthRequest
 import net.skillgain.domain.model.user.AuthResponse
-import net.skillgain.domain.entity.user.Role
-import net.skillgain.domain.entity.user.User
 import net.skillgain.exception.domain.user.InvalidUserCredentialsException
 import net.skillgain.exception.domain.user.UserAlreadyExistsException
 import net.skillgain.persistence.repository.user.UserRepository
 import net.skillgain.security.jwt.JwtService
-import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 
 @Service
 class AuthServiceImpl(

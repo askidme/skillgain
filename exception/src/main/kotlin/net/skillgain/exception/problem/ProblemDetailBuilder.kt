@@ -51,7 +51,7 @@ class ProblemDetailBuilder(
         }
 
         additionalProperties.forEach { (key, value) ->
-            problemDetail.setProperty(key, sanitizeMessage(value))
+            problemDetail.setProperty(key, value)
         }
 
         return problemDetail

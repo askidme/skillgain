@@ -1,6 +1,7 @@
 package net.skillgain.domain.entity.user
 
 import jakarta.persistence.*
+import net.skillgain.domain.entity.AuditableEntity
 import java.time.LocalDate
 
 @Entity
@@ -29,8 +30,8 @@ data class User(
     val profilePicture: String?,
 
     @Enumerated(EnumType.STRING)
-    val role: Role
-) {
+    val userRole: UserRole,
+) : AuditableEntity(){
     companion object {
 
         fun signUp(
@@ -44,11 +45,8 @@ data class User(
             phone = null,
             birthDate = null,
             profilePicture = null,
-            role = Role.USER
+            userRole = UserRole.STUDENT
         )
     }
 }
 
-enum class Role {
-    USER, ADMIN
-}
