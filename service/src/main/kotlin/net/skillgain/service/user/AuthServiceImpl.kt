@@ -2,10 +2,13 @@ package net.skillgain.service.user
 
 
 import net.skillgain.domain.entity.user.User
+import net.skillgain.domain.entity.user.UserRole
 import net.skillgain.domain.model.user.AuthRequest
 import net.skillgain.domain.model.user.AuthResponse
 import net.skillgain.exception.domain.user.InvalidUserCredentialsException
+import net.skillgain.exception.domain.user.RoleNotFoundException
 import net.skillgain.exception.domain.user.UserAlreadyExistsException
+import net.skillgain.persistence.repository.user.RoleRepository
 import net.skillgain.persistence.repository.user.UserRepository
 import net.skillgain.security.jwt.JwtService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service
 @Service
 class AuthServiceImpl(
     private val userRepository: UserRepository,
+    private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService
 ) : AuthService {
@@ -23,7 +27,14 @@ class AuthServiceImpl(
             throw UserAlreadyExistsException(request.email)
         }
 
-        val user = User.signUp(email = request.email, password = passwordEncoder.encode(request.password))
+        val roleUser = roleRepository.findByName(UserRole.ROLE_USER.name)
+            ?: throw RoleNotFoundException(UserRole.ROLE_USER.name)
+
+        val user = User.signUp(
+            email = request.email,
+            encodedPassword = passwordEncoder.encode(request.password),
+            defaultRole = roleUser
+        )
 
         userRepository.save(user)
         return "User registered successfully"

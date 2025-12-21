@@ -3,6 +3,7 @@ package net.skillgain.domain.entity.user
 import jakarta.persistence.*
 import net.skillgain.domain.entity.AuditableEntity
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "users")
@@ -16,37 +17,77 @@ data class User(
     @Column(nullable = false, unique = true)
     val email: String,
 
+    val password: String? = null,
+
+    val firstName: String? = null,
+
+    val lastName: String? = null,
+
+    val phone: String? = null,
+
+    val birthDate: LocalDate? = null,
+
+    val profilePicture: String? = null,
+
     @Column(nullable = false)
-    val password: String,
+    var active: Boolean = true,
 
-    val firstName: String?,
+    @Column(nullable = false)
+    var emailVerified: Boolean = false,
 
-    val lastName: String?,
+    @Column(nullable = false)
+    var authProvider: String = "LOCAL",
 
-    val phone: String?,
+    var providerUserId: String? = null,
 
-    val birthDate: LocalDate?,
+    var lastLoginAt: LocalDateTime? = null,
 
-    val profilePicture: String?,
-
-    @Enumerated(EnumType.STRING)
-    val userRole: UserRole,
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id")]
+    )
+    val roles: MutableSet<Role> = mutableSetOf()
 ) : AuditableEntity(){
+    fun addRole(role: Role) {
+        roles.add(role)
+    }
+
+    fun removeRole(role: Role) {
+        roles.remove(role)
+    }
     companion object {
 
         fun signUp(
             email: String,
-            password: String
-        ): User = User(
-            email = email,
-            password = password,
-            firstName = null,
-            lastName = null,
-            phone = null,
-            birthDate = null,
-            profilePicture = null,
-            userRole = UserRole.STUDENT
-        )
+            encodedPassword: String,
+            defaultRole: Role
+        ): User {
+            val user = User(
+                email = email,
+                password = encodedPassword
+            )
+            user.addRole(defaultRole)
+            return user
+        }
+
+        fun oauthSignUp(
+            email: String,
+            provider: String,
+            providerUserId: String,
+            defaultRole: Role
+        ): User {
+            val user = User(
+                email = email,
+                password = null,
+                authProvider = provider,
+                providerUserId = providerUserId,
+                emailVerified = true
+            )
+            user.addRole(defaultRole)
+            return user
+        }
     }
 }
 

@@ -13,13 +13,13 @@ class UserDetailsServiceImpl(
     private val userRepository: UserRepository
 ) : UserDetailsService {
     override fun loadUserByUsername(email: String): UserDetails {
+
         val user = userRepository.findByEmail(email)
             ?: throw UsernameNotFoundException("User not found")
 
-        return User(
-            user.email,
-            user.password,
-            listOf(SimpleGrantedAuthority("ROLE_${user.userRole.name}"))
-        )
+        val authorities = user.roles
+            .map { role -> SimpleGrantedAuthority(role.name) }
+
+        return User(user.email, user.password, authorities)
     }
 }

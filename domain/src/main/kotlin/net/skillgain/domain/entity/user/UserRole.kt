@@ -1,7 +1,8 @@
 package net.skillgain.domain.entity.user
 
 enum class UserRole {
-    STUDENT,
-    INSTRUCTOR,
-    ADMIN
+    ROLE_USER,
+    ROLE_INSTRUCTOR,
+    ROLE_AUTHOR,
+    ROLE_ADMIN;
 }
