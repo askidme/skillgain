@@ -1,6 +1,7 @@
-package net.skillgain.exception.domain.user
+package net.skillgain.exception.domain.user.role
 
 import net.skillgain.exception.core.BusinessException
+import net.skillgain.exception.domain.user.UserExceptionCode
 import org.springframework.http.HttpStatus
 
 class RoleNotFoundException(userRole: String): BusinessException(

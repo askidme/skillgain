@@ -1,4 +1,4 @@
-package net.skillgain.domain.model.user
+package net.skillgain.domain.model.user.auth
 
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank

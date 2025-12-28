@@ -23,11 +23,16 @@ dependencies {
     implementation(project(":cache"))
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation(project(":app"))
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation(kotlin("test"))
 }
 
 tasks.test {
     useJUnitPlatform()
+
 }
 kotlin {
     jvmToolchain(21)

@@ -1,6 +1,7 @@
-package net.skillgain.exception.domain.user
+package net.skillgain.exception.domain.user.user
 
 import net.skillgain.exception.core.BusinessException
+import net.skillgain.exception.domain.user.UserExceptionCode
 import org.springframework.http.HttpStatus
 
 class UserNotFoundException(userId: Long) : BusinessException(

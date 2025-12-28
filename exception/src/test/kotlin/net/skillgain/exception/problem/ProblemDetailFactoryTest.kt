@@ -6,9 +6,9 @@ import jakarta.validation.Path
 import net.skillgain.common.i18n.MessageConfig
 import net.skillgain.common.i18n.MessageResolver
 import net.skillgain.exception.VerificationHelper.assertCommonProperties
-import net.skillgain.exception.domain.user.InvalidUserCredentialsException
+import net.skillgain.exception.domain.user.user.InvalidUserCredentialsException
 import net.skillgain.exception.domain.user.UserExceptionCode
-import net.skillgain.exception.domain.user.UserNotFoundException
+import net.skillgain.exception.domain.user.user.UserNotFoundException
 import net.skillgain.exception.model.ProblemType
 import net.skillgain.exception.model.ValidationError
 import org.assertj.core.api.Assertions.assertThat
@@ -90,7 +90,7 @@ class ProblemDetailFactoryTest {
         assertThat(detail.status).isEqualTo(500)
         assertThat(detail.title).isEqualTo("Internal server error")
         assertThat(detail.detail).isEqualTo("An unexpected error occurred. Please try again later.")
-        assertThat(detail.instance.toString()).isEqualTo("/api/test")
+        assertThat(detail.instance?.toString()).isEqualTo("/api/test")
         assertCommonProperties(detail, ProblemType.INTERNAL_SERVER_ERROR.name)
         assertThat(detail.properties).containsEntry("code", ProblemType.INTERNAL_SERVER_ERROR.name)
     }
@@ -107,7 +107,7 @@ class ProblemDetailFactoryTest {
         //Assert
         assertThat(detail.status).isEqualTo(404)
         assertThat(detail.title).isEqualTo("User not found")
-        assertThat(detail.instance.toString()).isEqualTo("/api/test")
+        assertThat(detail.instance?.toString()).isEqualTo("/api/test")
         assertThat(detail.detail).isEqualTo("User with id 123 not found.")
         assertCommonProperties(detail, UserExceptionCode.USER_NOT_FOUND.name)
     }
@@ -124,7 +124,7 @@ class ProblemDetailFactoryTest {
         //Assert
         assertThat(detail.status).isEqualTo(401)
         assertThat(detail.title).isEqualTo("Invalid credentials")
-        assertThat(detail.instance.toString()).isEqualTo("/api/test")
+        assertThat(detail.instance?.toString()).isEqualTo("/api/test")
         assertThat(detail.detail).isEqualTo("The email or password provided is incorrect.")
         assertCommonProperties(detail, UserExceptionCode.INVALID_USER_CREDENTIALS.name)
     }

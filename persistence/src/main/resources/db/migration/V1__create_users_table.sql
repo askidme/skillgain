@@ -12,28 +12,29 @@ CREATE SEQUENCE user_seq
 -- ===============================
 CREATE TABLE users
 (
-    id               BIGINT       NOT NULL DEFAULT nextval('user_seq'),
-    email            VARCHAR(255) NOT NULL,
-    password         VARCHAR(255), -- nullable for OAuth users
-    first_name       VARCHAR(255),
-    last_name        VARCHAR(255),
-    phone            VARCHAR(50),
-    birth_date       DATE,
-    profile_picture  VARCHAR(512),
+    id                    BIGINT       NOT NULL DEFAULT nextval('user_seq'),
+    email                 VARCHAR(255) NOT NULL,
+    password              VARCHAR(255), -- nullable for OAuth users
+    first_name            VARCHAR(255),
+    last_name             VARCHAR(255),
+    phone                 VARCHAR(50),
+    birth_date            DATE,
+    profile_picture       VARCHAR(512),
 
     -- Account state
-    active           BOOLEAN      NOT NULL DEFAULT TRUE,
-    email_verified   BOOLEAN      NOT NULL DEFAULT FALSE,
-    auth_provider    VARCHAR(50)  NOT NULL DEFAULT 'LOCAL',
-    provider_user_id VARCHAR(255), -- Google/GitHub user id
+    active                BOOLEAN      NOT NULL DEFAULT TRUE,
+    email_verified        BOOLEAN      NOT NULL DEFAULT FALSE,
+    force_password_change BOOLEAN      NOT NULL DEFAULT FALSE,
+    auth_provider         VARCHAR(50)  NOT NULL DEFAULT 'LOCAL',
+    provider_user_id      VARCHAR(255), -- Google/GitHub user id
 
-    last_login_at    TIMESTAMP,
+    last_login_at         TIMESTAMP,
 
-    created_at       TIMESTAMP    NOT NULL DEFAULT now(),
-    updated_at       TIMESTAMP    NOT NULL DEFAULT now(),
+    created_at            TIMESTAMP    NOT NULL DEFAULT now(),
+    updated_at            TIMESTAMP    NOT NULL DEFAULT now(),
 
-    created_by       BIGINT,
-    updated_by       BIGINT,
+    created_by            BIGINT,
+    updated_by            BIGINT,
 
     CONSTRAINT pk_users PRIMARY KEY (id),
 
@@ -101,3 +102,36 @@ CREATE TABLE user_oauth_accounts
 -- Ownership (optional but recommended)
 -- ===============================
 ALTER SEQUENCE user_seq OWNED BY users.id;
+
+-- ===============================
+-- System admin user
+-- ===============================
+INSERT INTO users (id,
+                   email,
+                   password,
+                   first_name,
+                   last_name,
+                   active,
+                   email_verified,
+                   auth_provider,
+                   created_at,
+                   updated_at)
+VALUES (nextval('user_seq'),
+        'admin@skillgain.net',
+        '$2a$10$kkjyGsbq/ZQShTnE7WsUdO.RwtXCiNKG.gCNvAigQ9G8bq1E2Chi6',
+        'System',
+        'Administrator',
+        TRUE,
+        TRUE,
+        'LOCAL',
+        now(),
+        now());
+
+-- ===============================
+-- Assign ROLE_ADMIN to System Administrator
+-- ===============================
+INSERT INTO user_roles (user_id, role_id)
+SELECT u.id, r.id
+FROM users u
+         JOIN roles r ON r.name = 'ROLE_ADMIN'
+WHERE u.email = 'admin@skillgain.net';

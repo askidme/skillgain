@@ -2,6 +2,8 @@ package net.skillgain.domain.entity.user
 
 import jakarta.persistence.*
 import net.skillgain.domain.entity.AuditableEntity
+import net.skillgain.domain.model.user.AuthProvider
+import net.skillgain.domain.model.user.admin.UserResponse
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -30,13 +32,17 @@ data class User(
     val profilePicture: String? = null,
 
     @Column(nullable = false)
+    val forcePasswordChange: Boolean = false,
+
+    @Column(nullable = false)
     var active: Boolean = true,
 
     @Column(nullable = false)
     var emailVerified: Boolean = false,
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var authProvider: String = "LOCAL",
+    var authProvider: AuthProvider = AuthProvider.LOCAL,
 
     var providerUserId: String? = null,
 
@@ -53,7 +59,6 @@ data class User(
     fun addRole(role: Role) {
         roles.add(role)
     }
-
     fun removeRole(role: Role) {
         roles.remove(role)
     }
@@ -66,7 +71,7 @@ data class User(
         ): User {
             val user = User(
                 email = email,
-                password = encodedPassword
+                password = encodedPassword,
             )
             user.addRole(defaultRole)
             return user
@@ -74,7 +79,7 @@ data class User(
 
         fun oauthSignUp(
             email: String,
-            provider: String,
+            provider: AuthProvider,
             providerUserId: String,
             defaultRole: Role
         ): User {
@@ -90,4 +95,12 @@ data class User(
         }
     }
 }
+fun User.toResponse() = UserResponse(
+    id = id,
+    email = email,
+    roles = roles.map { it.name }.toSet(),
+    active = active,
+    authProvider = authProvider,
+    createdAt = createdAt.toString()
+)
 
