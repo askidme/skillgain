@@ -3,6 +3,7 @@ package net.skillgain.service.user.impl
 
 import net.skillgain.domain.entity.user.User
 import net.skillgain.domain.entity.user.UserRole
+import net.skillgain.domain.mapper.user.toUser
 import net.skillgain.domain.model.user.auth.AuthRequest
 import net.skillgain.domain.model.user.auth.AuthResponse
 import net.skillgain.domain.model.user.invite.AcceptInviteRequest
@@ -42,13 +43,10 @@ class AuthServiceImpl(
         val roleUser = roleRepository.findByName(UserRole.ROLE_USER.name)
             ?: throw RoleNotFoundException(UserRole.ROLE_USER.name)
 
-        val user = User.signUp(
-            email = request.email,
-            encodedPassword = passwordEncoder.encode(request.password),
-            defaultRole = roleUser
-        )
+        val user = request.toUser(roleUser, passwordEncoder.encode(request.password))
 
         userRepository.save(user)
+
         return "User registered successfully"
     }
 

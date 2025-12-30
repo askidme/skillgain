@@ -1,6 +1,6 @@
 package net.skillgain.api.auth.controller.user
 
-import net.skillgain.domain.entity.user.toResponse
+import net.skillgain.domain.mapper.user.toResponse
 import net.skillgain.domain.model.user.admin.CreateUserRequest
 import net.skillgain.domain.model.user.admin.UpdateUserRequest
 import net.skillgain.domain.model.user.admin.UpdateUserRolesRequest
@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/admin/users")
+@RequestMapping("/api/v1/admin/users")
 @PreAuthorize("hasRole('ADMIN')")
 class AdminUserController(
     private val userAdminService: UserAdminService
@@ -39,11 +39,10 @@ class AdminUserController(
         @RequestBody request: UpdateUserRolesRequest,
         authentication: Authentication
     ): UserResponse {
-        val adminId = authentication.principal as Long // or extracted from JWT
+        val adminId = authentication.principal as Long
         return userAdminService.updateUserRoles(adminId, id, request).toResponse()
     }
 
     @GetMapping
-    fun list(): List<UserResponse> =
-        userAdminService.listUsers().map { it.toResponse() }
+    fun list(): List<UserResponse> = userAdminService.listUsers()
 }

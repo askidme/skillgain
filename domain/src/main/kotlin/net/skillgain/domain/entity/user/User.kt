@@ -59,24 +59,8 @@ data class User(
     fun addRole(role: Role) {
         roles.add(role)
     }
-    fun removeRole(role: Role) {
-        roles.remove(role)
-    }
+
     companion object {
-
-        fun signUp(
-            email: String,
-            encodedPassword: String,
-            defaultRole: Role
-        ): User {
-            val user = User(
-                email = email,
-                password = encodedPassword,
-            )
-            user.addRole(defaultRole)
-            return user
-        }
-
         fun oauthSignUp(
             email: String,
             provider: AuthProvider,
@@ -95,12 +79,3 @@ data class User(
         }
     }
 }
-fun User.toResponse() = UserResponse(
-    id = id,
-    email = email,
-    roles = roles.map { it.name }.toSet(),
-    active = active,
-    authProvider = authProvider,
-    createdAt = createdAt.toString()
-)
-
