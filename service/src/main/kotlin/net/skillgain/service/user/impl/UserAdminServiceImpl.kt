@@ -15,14 +15,14 @@ import net.skillgain.exception.domain.user.role.RoleNotFoundException
 import net.skillgain.exception.domain.user.user.UserAlreadyExistsException
 import net.skillgain.exception.domain.user.user.UserNotFoundException
 import net.skillgain.persistence.repository.user.RoleRepository
-import net.skillgain.persistence.repository.user.UserRepository
 import net.skillgain.service.user.UserAdminService
 import net.skillgain.service.user.UserInviteTokenService
+import net.skillgain.service.user.UserService
 import org.springframework.stereotype.Service
 
 @Service
 class UserAdminServiceImpl(
-    private val userRepository: UserRepository,
+    private val userService: UserService,
     private val roleRepository: RoleRepository,
     private val inviteTokenService: UserInviteTokenService
 
@@ -30,7 +30,7 @@ class UserAdminServiceImpl(
 
     override fun createUser(request: CreateUserRequest): UserResponse {
 
-        if (userRepository.existsByEmail(request.email)) {
+        if (userService.existsByEmail(request.email)) {
             throw UserAlreadyExistsException(request.email)
         }
 
@@ -39,27 +39,20 @@ class UserAdminServiceImpl(
 
         val user = request.toUser(AuthProvider.LOCAL, mutableSetOf(roleUser))
 
-        return userRepository.save(user).also { inviteTokenService.sendInviteToken(it) }.toResponse()
+        return userService.save(user).also { inviteTokenService.sendInviteToken(it) }.toResponse()
     }
 
     override fun updateUser(userId: Long, request: UpdateUserRequest): UserResponse {
-        val user = userRepository.findById(userId)
-            .orElseThrow { UserNotFoundException(userId) }
+        val user = userService.findById(userId)
 
-        return userRepository.save(request.toUser(user)).toResponse()
+        return userService.save(request.toUser(user)).toResponse()
     }
 
-    override fun deleteUser(userId: Long) {
-        userRepository.deleteById(userId)
-    }
+    override fun deleteUser(userId: Long) = userService.delete(userId)
 
-    override fun updateUserRoles(
-        adminId: Long,
-        targetUserId: Long,
-        request: UpdateUserRolesRequest
-    ): UserResponse {
+    override fun updateUserRoles(adminId: Long, targetUserId: Long, request: UpdateUserRolesRequest): UserResponse {
 
-        if(request.roles.isEmpty()) {
+        if (request.roles.isEmpty()) {
             throw EmptyUserRolesException()
         }
 
@@ -67,7 +60,7 @@ class UserAdminServiceImpl(
             throw RoleModificationException()
         }
 
-        val user = userRepository.findById(targetUserId).orElseThrow { UserNotFoundException(targetUserId) }
+        val user = userService.findById(targetUserId)
 
         val roles = roleRepository.findAllByNameIn(request.roles)
 
@@ -78,8 +71,8 @@ class UserAdminServiceImpl(
         user.roles.clear()
         user.roles.addAll(roles)
 
-        return userRepository.save(user).toResponse()
+        return userService.save(user).toResponse()
     }
 
-    override fun listUsers(): List<UserResponse> =  userRepository.findAll().map { it.toResponse() }
+    override fun listUsers(): List<UserResponse> = userService.findAll().map { it.toResponse() }
 }

@@ -6,7 +6,7 @@ import net.skillgain.domain.model.user.profile.UserProfileResponse
 
 interface UserProfileService {
 
-    fun updateProfile(email: String, request: UpdateUserProfileRequest): UserProfileResponse
+    fun updateProfile(userId: Long, request: UpdateUserProfileRequest): UserProfileResponse
 
-    fun changePassword(email: String, request: ChangePasswordRequest)
+    fun resetPassword(userId: Long, request: ChangePasswordRequest)
 }

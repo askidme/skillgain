@@ -16,10 +16,10 @@ import net.skillgain.exception.domain.user.user.InvalidUserCredentialsException
 import net.skillgain.exception.domain.user.user.UserAlreadyExistsException
 import net.skillgain.persistence.repository.user.InviteTokenRepository
 import net.skillgain.persistence.repository.user.RoleRepository
-import net.skillgain.persistence.repository.user.UserRepository
 import net.skillgain.security.jwt.JwtService
 import net.skillgain.service.email.EmailService
 import net.skillgain.service.user.AuthService
+import net.skillgain.service.user.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -28,7 +28,7 @@ import java.util.*
 
 @Service
 class AuthServiceImpl(
-    private val userRepository: UserRepository,
+    private val userService: UserService,
     private val roleRepository: RoleRepository,
     private val inviteTokenRepository: InviteTokenRepository,
     private val passwordEncoder: PasswordEncoder,
@@ -37,7 +37,7 @@ class AuthServiceImpl(
 ) : AuthService {
 
     override fun register(request: AuthRequest): String {
-        if (userRepository.findByEmail(request.email) != null) {
+        if (userService.existsByEmail(request.email) != null) {
             throw UserAlreadyExistsException(request.email)
         }
 
@@ -46,13 +46,13 @@ class AuthServiceImpl(
 
         val user = request.toUser(roleUser, passwordEncoder.encode(request.password))
 
-        userRepository.save(user)
+        userService.save(user)
 
         return "User registered successfully"
     }
 
     override fun login(request: AuthRequest): AuthResponse {
-        val user = userRepository.findByEmail(request.email) ?: throw InvalidUserCredentialsException()
+        val user = userService.findByEmail(request.email) ?: throw InvalidUserCredentialsException()
 
         if (user.forcePasswordChange) {
             throw PasswordChangeRequiredException()
@@ -69,11 +69,10 @@ class AuthServiceImpl(
     @Transactional
     override fun requestPasswordReset(request: PasswordResetRequest) {
 
-        val user = userRepository.findByEmail(request.email)
-            ?: return // DO NOT reveal existence
+        val user = userService.findByEmail(request.email) ?: return
 
         if (user.authProvider != AuthProvider.LOCAL) {
-            return // OAuth users reset via provider
+            return
         }
 
         val token = UUID.randomUUID().toString()
@@ -86,13 +85,11 @@ class AuthServiceImpl(
 
         inviteTokenRepository.save(resetToken)
 
-        emailService.sendPasswordResetEmail(email = user.email,token = token)
+        emailService.sendPasswordResetEmail(email = user.email, token = token)
     }
 
     @Transactional
-    override fun finalizePassword(
-        request: FinalizePasswordRequest
-    ): FinalizePasswordResponse {
+    override fun finalizePassword(request: FinalizePasswordRequest): FinalizePasswordResponse {
 
         if (request.password != request.confirmPassword) {
             throw PasswordMismatchException()
@@ -117,10 +114,7 @@ class AuthServiceImpl(
 
         tokenEntity.used = true
 
-        return FinalizePasswordResponse(
-            success = true,
-            message = "Password set successfully."
-        )
+        return FinalizePasswordResponse(success = true, message = "Password set successfully.")
     }
 
 }

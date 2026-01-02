@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.Authentication
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -38,11 +38,8 @@ class AdminUserController(
     fun updateRoles(
         @PathVariable id: Long,
         @RequestBody request: UpdateUserRolesRequest,
-        authentication: Authentication
-    ): UserResponse {
-        val adminId = (authentication.principal as CustomUserPrincipal).userId
-        return userAdminService.updateUserRoles(adminId, id, request)
-    }
+        @AuthenticationPrincipal principal: CustomUserPrincipal
+    ): UserResponse = userAdminService.updateUserRoles(principal.userId, id, request)
 
     @GetMapping
     fun list(): List<UserResponse> = userAdminService.listUsers()
