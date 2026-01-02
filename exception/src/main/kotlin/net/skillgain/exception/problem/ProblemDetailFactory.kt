@@ -8,6 +8,7 @@ import net.skillgain.exception.model.ValidationError
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.stereotype.Component
 import org.springframework.web.HttpMediaTypeNotSupportedException
 import org.springframework.web.HttpRequestMethodNotSupportedException
@@ -55,8 +56,18 @@ class ProblemDetailFactory(
             is MissingServletRequestParameterException -> buildMissingParameterProblem(ex)
             is MethodArgumentTypeMismatchException -> buildTypeMismatchProblem(ex)
             is HttpMessageNotReadableException -> buildUnreadableRequestProblem(ex)
+            is InsufficientAuthenticationException -> buildInsufficientAuthenticationProblem(ex)
             else -> buildGenericBadRequestProblem()
         }
+    }
+
+    private fun buildInsufficientAuthenticationProblem(ex: InsufficientAuthenticationException): ProblemDetail {
+        val sanitizedMessage = sanitizeMessage(ex.message)
+        return builder.build(
+            status = HttpStatus.FORBIDDEN,
+            problemType = ProblemType.INSUFFICIENT_AUTHENTICATION,
+            additionalProperties = mapOf("hint" to sanitizedMessage)
+        )
     }
 
     private fun buildConstraintViolationProblem(ex: ConstraintViolationException): ProblemDetail {

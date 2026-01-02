@@ -43,10 +43,10 @@ class UserProfileServiceImpl(
         }
 
         userRepository.save(
-            user.copy(
-                password = passwordEncoder.encode(request.currentPassword),
+            user.apply {
+                password = passwordEncoder.encode(request.currentPassword)
                 forcePasswordChange = false
-            )
+            }
         )
     }
 }

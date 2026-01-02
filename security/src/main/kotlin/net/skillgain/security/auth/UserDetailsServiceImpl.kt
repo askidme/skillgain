@@ -2,7 +2,6 @@ package net.skillgain.security.auth
 
 import net.skillgain.persistence.repository.user.UserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -20,6 +19,13 @@ class UserDetailsServiceImpl(
         val authorities = user.roles
             .map { role -> SimpleGrantedAuthority(role.name) }
 
-        return User(user.email, user.password, authorities)
+        return CustomUserPrincipal(
+            userId = user.id,
+            email = user.email,
+            password = user.password,
+            authorities = user.roles.map {
+                SimpleGrantedAuthority(it.name)
+            }
+        )
     }
 }

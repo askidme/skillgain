@@ -25,3 +25,11 @@ app:
   jwt:
     secret: skillgain-super-secret-key-1234567890
     expiration-ms: 86400000
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        orm:
+          jdbc:
+            bind: TRACE

@@ -44,5 +44,9 @@ enum class ProblemType(
     BAD_REQUEST(
         "exception.request.bad_request.title",
         "exception.request.bad_request.detail"
+    ),
+    INSUFFICIENT_AUTHENTICATION(
+        "exception.auth.insufficient_auth.title",
+        "exception.auth.insufficient_auth.detail"
     )
 }

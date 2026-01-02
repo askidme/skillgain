@@ -1,7 +1,8 @@
 package net.skillgain.domain.entity
 
-import jakarta.persistence.*
-import net.skillgain.domain.entity.user.User
+import jakarta.persistence.Column
+import jakarta.persistence.EntityListeners
+import jakarta.persistence.MappedSuperclass
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
@@ -21,12 +22,10 @@ open class AuditableEntity {
     lateinit var updatedAt: LocalDateTime
 
     @CreatedBy
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by")
-    var createdBy: User? = null
+    @Column(name = "created_by")
+    var createdBy: Long? = null
 
     @LastModifiedBy
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_by")
-    var updatedBy: User? = null
+    @Column(name = "updated_by")
+    var updatedBy: Long? = null
 }

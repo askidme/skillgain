@@ -3,13 +3,12 @@ package net.skillgain.domain.entity.user
 import jakarta.persistence.*
 import net.skillgain.domain.entity.AuditableEntity
 import net.skillgain.domain.model.user.AuthProvider
-import net.skillgain.domain.model.user.admin.UserResponse
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "users")
-data class User(
+class User(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
@@ -19,20 +18,20 @@ data class User(
     @Column(nullable = false, unique = true)
     val email: String,
 
-    val password: String? = null,
+    var password: String? = null,
 
-    val firstName: String? = null,
+    var firstName: String? = null,
 
-    val lastName: String? = null,
+    var lastName: String? = null,
 
-    val phone: String? = null,
+    var phone: String? = null,
 
-    val birthDate: LocalDate? = null,
+    var birthDate: LocalDate? = null,
 
-    val profilePicture: String? = null,
+    var profilePicture: String? = null,
 
     @Column(nullable = false)
-    val forcePasswordChange: Boolean = false,
+    var forcePasswordChange: Boolean = false,
 
     @Column(nullable = false)
     var active: Boolean = true,

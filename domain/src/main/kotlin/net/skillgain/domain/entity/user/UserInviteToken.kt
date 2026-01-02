@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "user_invite_tokens")
-data class UserInviteToken(
+class UserInviteToken(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "user_invite_token_seq")

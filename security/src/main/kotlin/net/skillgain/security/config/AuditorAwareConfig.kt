@@ -1,7 +1,6 @@
 package net.skillgain.security.config
 
-import net.skillgain.domain.entity.user.User
-import net.skillgain.persistence.repository.user.UserRepository
+import net.skillgain.security.auth.CustomUserPrincipal
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.AuditorAware
@@ -11,20 +10,16 @@ import java.util.*
 
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
-class AuditorAwareConfig(
-    private val userRepository: UserRepository
-) {
+class AuditorAwareConfig{
 
     @Bean
-    fun auditorProvider(): AuditorAware<User> = AuditorAware {
-        val authentication = SecurityContextHolder.getContext().authentication
+    fun auditorProvider(): AuditorAware<Long> = AuditorAware {
+        val auth = SecurityContextHolder.getContext().authentication
 
-        if (authentication == null || !authentication.isAuthenticated) {
-            return@AuditorAware Optional.empty()
+        if (auth == null || !auth.isAuthenticated || auth.principal == "anonymousUser") {
+            Optional.empty()
+        } else {
+            (auth.principal as? CustomUserPrincipal) ?.userId ?.let { Optional.of(it) } ?: Optional.empty()
         }
-
-        val email = authentication.name
-        userRepository.findByEmail(email)?.let { Optional.of(it) }
-            ?: Optional.empty()
     }
 }

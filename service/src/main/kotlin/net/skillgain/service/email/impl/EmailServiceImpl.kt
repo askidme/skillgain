@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service
 @Service
 class EmailServiceImpl: EmailService {
     override fun sendUserInvite(email: String, token: String) {
-        println("emailing token $token to $email ...")
+        println("emailing token $token to $email for invite user ...")
+    }
+
+    override fun sendPasswordResetEmail(email: String, token: String) {
+        println("emailing token $token to $email for reset password...")
     }
 }

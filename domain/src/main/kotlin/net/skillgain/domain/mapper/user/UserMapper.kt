@@ -37,13 +37,13 @@ fun User.toProfileResponse() = UserProfileResponse(
     createdAt = createdAt
 )
 
-fun UpdateUserProfileRequest.toUser(user: User) = user.copy(
-    firstName = this.firstName,
-    lastName = this.lastName,
-    phone = this.phone,
-    birthDate = this.birthDate,
-    profilePicture = this.profilePicture
-)
+fun UpdateUserProfileRequest.toUser(user: User) = user.apply {
+    firstName = this@toUser.firstName
+    lastName = this@toUser.lastName
+    phone = this@toUser.phone
+    birthDate = this@toUser.birthDate
+    profilePicture = this@toUser.profilePicture
+}
 
 fun CreateUserRequest.toUser(authProvider: AuthProvider, roles: MutableSet<Role>) = User(
     email = this.email,
@@ -56,9 +56,8 @@ fun CreateUserRequest.toUser(authProvider: AuthProvider, roles: MutableSet<Role>
     forcePasswordChange = true
 )
 
-fun UpdateUserRequest.toUser(user: User) = user.copy(
-    firstName = this.firstName,
-    lastName = this.lastName,
-    phone = this.phone,
-    active = this.active ?: false
-)
+fun UpdateUserRequest.toUser(user: User) = user.apply {
+    firstName = this@toUser.firstName
+    lastName = this@toUser.lastName
+    phone = this@toUser.phone
+}
