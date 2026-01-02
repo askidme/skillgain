@@ -13,7 +13,6 @@ import net.skillgain.exception.domain.user.role.InvalidUserRolesException
 import net.skillgain.exception.domain.user.role.RoleModificationException
 import net.skillgain.exception.domain.user.role.RoleNotFoundException
 import net.skillgain.exception.domain.user.user.UserAlreadyExistsException
-import net.skillgain.exception.domain.user.user.UserNotFoundException
 import net.skillgain.persistence.repository.user.RoleRepository
 import net.skillgain.service.user.UserAdminService
 import net.skillgain.service.user.UserInviteTokenService

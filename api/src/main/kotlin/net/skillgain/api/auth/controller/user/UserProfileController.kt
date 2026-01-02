@@ -23,5 +23,5 @@ class UserProfileController(private val userProfileService: UserProfileService) 
     fun changePassword(
         @Valid @RequestBody request: ChangePasswordRequest,
         @AuthenticationPrincipal principal: CustomUserPrincipal
-    ) = userProfileService.resetPassword(principal.userId, request)
+    ) = userProfileService.changePassword(principal.userId, request)
 }

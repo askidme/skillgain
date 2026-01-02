@@ -8,5 +8,5 @@ interface UserProfileService {
 
     fun updateProfile(userId: Long, request: UpdateUserProfileRequest): UserProfileResponse
 
-    fun resetPassword(userId: Long, request: ChangePasswordRequest)
+    fun changePassword(userId: Long, request: ChangePasswordRequest)
 }

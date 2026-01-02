@@ -6,7 +6,6 @@ import net.skillgain.domain.entity.user.UserRole
 import net.skillgain.domain.mapper.user.toUser
 import net.skillgain.domain.model.user.AuthProvider
 import net.skillgain.domain.model.user.auth.*
-import net.skillgain.exception.domain.user.invite.InvalidInviteTokenException
 import net.skillgain.exception.domain.user.invite.InviteTokenAlreadyUsedException
 import net.skillgain.exception.domain.user.invite.InviteTokenExpiredException
 import net.skillgain.exception.domain.user.password.PasswordChangeRequiredException
@@ -14,11 +13,11 @@ import net.skillgain.exception.domain.user.password.PasswordMismatchException
 import net.skillgain.exception.domain.user.role.RoleNotFoundException
 import net.skillgain.exception.domain.user.user.InvalidUserCredentialsException
 import net.skillgain.exception.domain.user.user.UserAlreadyExistsException
-import net.skillgain.persistence.repository.user.InviteTokenRepository
 import net.skillgain.persistence.repository.user.RoleRepository
 import net.skillgain.security.jwt.JwtService
 import net.skillgain.service.email.EmailService
 import net.skillgain.service.user.AuthService
+import net.skillgain.service.user.UserInviteTokenService
 import net.skillgain.service.user.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -30,14 +29,14 @@ import java.util.*
 class AuthServiceImpl(
     private val userService: UserService,
     private val roleRepository: RoleRepository,
-    private val inviteTokenRepository: InviteTokenRepository,
+    private val inviteTokenService: UserInviteTokenService,
     private val passwordEncoder: PasswordEncoder,
     private val emailService: EmailService,
     private val jwtService: JwtService
 ) : AuthService {
 
     override fun register(request: AuthRequest): String {
-        if (userService.existsByEmail(request.email) != null) {
+        if (userService.existsByEmail(request.email)) {
             throw UserAlreadyExistsException(request.email)
         }
 
@@ -69,7 +68,7 @@ class AuthServiceImpl(
     @Transactional
     override fun requestPasswordReset(request: PasswordResetRequest) {
 
-        val user = userService.findByEmail(request.email) ?: return
+        val user = userService.getByEmail(request.email) ?: return
 
         if (user.authProvider != AuthProvider.LOCAL) {
             return
@@ -83,7 +82,7 @@ class AuthServiceImpl(
             expiresAt = LocalDateTime.now().plusHours(24)
         )
 
-        inviteTokenRepository.save(resetToken)
+        inviteTokenService.save(resetToken)
 
         emailService.sendPasswordResetEmail(email = user.email, token = token)
     }
@@ -95,8 +94,7 @@ class AuthServiceImpl(
             throw PasswordMismatchException()
         }
 
-        val tokenEntity = inviteTokenRepository.findByToken(request.token)
-            ?: throw InvalidInviteTokenException()
+        val tokenEntity = inviteTokenService.findByToken(request.token)
 
         if (tokenEntity.used) {
             throw InviteTokenAlreadyUsedException()

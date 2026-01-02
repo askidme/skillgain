@@ -10,6 +10,8 @@ interface UserService {
 
     fun findByEmail(email: String): User
 
+    fun getByEmail(email: String): User?
+
     fun existsByEmail(email: String): Boolean
 
     fun save(user: User): User

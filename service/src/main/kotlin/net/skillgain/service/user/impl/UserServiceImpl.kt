@@ -26,6 +26,9 @@ class UserServiceImpl(
         ?: throw UserNotFoundException(email)
 
     @Transactional(readOnly = true)
+    override fun getByEmail(email: String): User? = userRepository.findByEmail(email)
+
+    @Transactional(readOnly = true)
     override fun existsByEmail(email: String): Boolean = userRepository.existsByEmail(email)
 
     override fun save(user: User): User = userRepository.save(user)

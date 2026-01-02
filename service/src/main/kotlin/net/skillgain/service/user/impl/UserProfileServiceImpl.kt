@@ -7,7 +7,6 @@ import net.skillgain.domain.model.user.profile.UpdateUserProfileRequest
 import net.skillgain.domain.model.user.profile.UserProfileResponse
 import net.skillgain.exception.domain.user.password.PasswordMismatchException
 import net.skillgain.exception.domain.user.user.InvalidUserCredentialsException
-import net.skillgain.exception.domain.user.user.UserNotFoundException
 import net.skillgain.service.user.UserProfileService
 import net.skillgain.service.user.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -28,7 +27,7 @@ class UserProfileServiceImpl(
     }
 
     @Transactional
-    override fun resetPassword(userId: Long, request: ChangePasswordRequest) {
+    override fun changePassword(userId: Long, request: ChangePasswordRequest) {
 
         if (request.newPassword != request.confirmPassword) {
             throw PasswordMismatchException()
