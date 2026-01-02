@@ -5,12 +5,7 @@ import net.skillgain.domain.entity.user.UserInviteToken
 import net.skillgain.domain.entity.user.UserRole
 import net.skillgain.domain.mapper.user.toUser
 import net.skillgain.domain.model.user.AuthProvider
-import net.skillgain.domain.model.user.auth.AuthRequest
-import net.skillgain.domain.model.user.auth.AuthResponse
-import net.skillgain.domain.model.user.auth.PasswordResetConfirmRequest
-import net.skillgain.domain.model.user.auth.PasswordResetRequest
-import net.skillgain.domain.model.user.invite.AcceptInviteRequest
-import net.skillgain.domain.model.user.invite.AcceptInviteResponse
+import net.skillgain.domain.model.user.auth.*
 import net.skillgain.exception.domain.user.invite.InvalidInviteTokenException
 import net.skillgain.exception.domain.user.invite.InviteTokenAlreadyUsedException
 import net.skillgain.exception.domain.user.invite.InviteTokenExpiredException
@@ -72,42 +67,6 @@ class AuthServiceImpl(
     }
 
     @Transactional
-    override fun acceptInvite(request: AcceptInviteRequest): AcceptInviteResponse {
-
-        val invite = inviteTokenRepository.findByToken(request.token)
-            ?: throw InvalidInviteTokenException()
-
-        if (invite.used) {
-            throw InviteTokenAlreadyUsedException()
-        }
-
-        if (invite.expiresAt.isBefore(LocalDateTime.now())) {
-            throw InviteTokenExpiredException()
-        }
-
-        if (request.password != request.confirmPassword) {
-            throw PasswordMismatchException()
-        }
-
-        val user = invite.user.apply {
-            password = passwordEncoder.encode(request.password)
-            forcePasswordChange = false
-            emailVerified = true
-        }
-
-        invite.used = true
-
-        userRepository.save(user)
-        inviteTokenRepository.save(invite)
-
-        return AcceptInviteResponse(
-            email = request.token,
-            activated = true,
-            message = "Your account has been activated successfully."
-        )
-    }
-
-    @Transactional
     override fun requestPasswordReset(request: PasswordResetRequest) {
 
         val user = userRepository.findByEmail(request.email)
@@ -130,11 +89,12 @@ class AuthServiceImpl(
         emailService.sendPasswordResetEmail(email = user.email,token = token)
     }
 
-
     @Transactional
-    override fun confirmPasswordReset(request: PasswordResetConfirmRequest) {
+    override fun finalizePassword(
+        request: FinalizePasswordRequest
+    ): FinalizePasswordResponse {
 
-        if (request.newPassword != request.confirmPassword) {
+        if (request.password != request.confirmPassword) {
             throw PasswordMismatchException()
         }
 
@@ -150,10 +110,17 @@ class AuthServiceImpl(
         }
 
         tokenEntity.user.apply {
-            password = passwordEncoder.encode(request.newPassword)
+            password = passwordEncoder.encode(request.password)
             forcePasswordChange = false
             emailVerified = true
         }
+
         tokenEntity.used = true
+
+        return FinalizePasswordResponse(
+            success = true,
+            message = "Password set successfully."
+        )
     }
+
 }

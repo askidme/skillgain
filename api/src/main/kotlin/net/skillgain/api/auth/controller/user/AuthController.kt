@@ -1,12 +1,7 @@
 package net.skillgain.api.auth.controller.user
 
 import jakarta.validation.Valid
-import net.skillgain.domain.model.user.auth.AuthRequest
-import net.skillgain.domain.model.user.auth.AuthResponse
-import net.skillgain.domain.model.user.auth.PasswordResetConfirmRequest
-import net.skillgain.domain.model.user.auth.PasswordResetRequest
-import net.skillgain.domain.model.user.invite.AcceptInviteRequest
-import net.skillgain.domain.model.user.invite.AcceptInviteResponse
+import net.skillgain.domain.model.user.auth.*
 import net.skillgain.service.user.AuthService
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
@@ -28,20 +23,14 @@ class AuthController(private val authService: AuthService) {
     fun login(@RequestBody req: AuthRequest): ResponseEntity<AuthResponse> =
         ok(authService.login(req))
 
-    @PostMapping("invite/accept")
-    fun acceptInvite(@RequestBody request: AcceptInviteRequest): ResponseEntity<AcceptInviteResponse> =
-        ok(authService.acceptInvite(request))
-
     @PostMapping("/password/reset")
     fun requestPasswordReset(@Valid @RequestBody request: PasswordResetRequest): ResponseEntity<Void> {
         authService.requestPasswordReset(request)
         return ok().build()
     }
 
-    @PostMapping("/password/reset/confirm")
-    fun confirmPasswordReset(@Valid @RequestBody request: PasswordResetConfirmRequest): ResponseEntity<Void> {
-        authService.confirmPasswordReset(request)
-        return ok().build()
-    }
+    @PostMapping("/password/finalize")
+    fun finalizePassword(@Valid @RequestBody request: FinalizePasswordRequest): ResponseEntity<FinalizePasswordResponse> =
+        ok(authService.finalizePassword(request))
 
 }
