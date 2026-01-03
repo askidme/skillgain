@@ -32,9 +32,11 @@ CREATE TABLE users
 
     created_at            TIMESTAMP    NOT NULL DEFAULT now(),
     updated_at            TIMESTAMP    NOT NULL DEFAULT now(),
+    deleted_at            TIMESTAMP,
 
     created_by            BIGINT,
     updated_by            BIGINT,
+    deleted_by            BIGINT,
 
     CONSTRAINT pk_users PRIMARY KEY (id),
 
@@ -44,8 +46,14 @@ CREATE TABLE users
         FOREIGN KEY (created_by) REFERENCES users (id),
 
     CONSTRAINT fk_users_updated_by
-        FOREIGN KEY (updated_by) REFERENCES users (id)
+        FOREIGN KEY (updated_by) REFERENCES users (id),
+
+    CONSTRAINT fk_users_deleted_by
+        FOREIGN KEY (deleted_by) REFERENCES users(id)
 );
+
+CREATE INDEX idx_users_deleted_at ON users(deleted_at);
+CREATE INDEX idx_users_deleted_by ON users(deleted_by);
 
 CREATE TABLE roles
 (

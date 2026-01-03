@@ -22,10 +22,19 @@ open class AuditableEntity {
     lateinit var updatedAt: LocalDateTime
 
     @CreatedBy
-    @Column(name = "created_by")
     var createdBy: Long? = null
 
     @LastModifiedBy
-    @Column(name = "updated_by")
     var updatedBy: Long? = null
+
+    var deletedAt: LocalDateTime? = null
+
+    var deletedBy: Long? = null
+
+    fun isDeleted(): Boolean = deletedAt != null
+
+    fun markDeleted(userId: Long){
+        deletedAt = LocalDateTime.now()
+        deletedBy = userId
+    }
 }

@@ -16,7 +16,7 @@ interface UserService {
 
     fun save(user: User): User
 
-    fun delete(user: User)
+    fun delete(adminUserId: Long,user: User)
 
-    fun delete(userId: Long)
+    fun delete(adminUserId: Long,userId: Long)
 }

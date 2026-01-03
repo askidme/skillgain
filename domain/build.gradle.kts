@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
-    kotlin("plugin.noarg")
+    kotlin("plugin.jpa")
     id("io.spring.dependency-management")
 }
 

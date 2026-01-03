@@ -13,6 +13,7 @@ import net.skillgain.exception.domain.user.password.PasswordMismatchException
 import net.skillgain.exception.domain.user.role.RoleNotFoundException
 import net.skillgain.exception.domain.user.user.InvalidUserCredentialsException
 import net.skillgain.exception.domain.user.user.UserAlreadyExistsException
+import net.skillgain.exception.domain.user.user.UserDisabledException
 import net.skillgain.persistence.repository.user.RoleRepository
 import net.skillgain.security.jwt.JwtService
 import net.skillgain.service.email.EmailService
@@ -51,7 +52,11 @@ class AuthServiceImpl(
     }
 
     override fun login(request: AuthRequest): AuthResponse {
-        val user = userService.findByEmail(request.email) ?: throw InvalidUserCredentialsException()
+        val user = userService.findByEmail(request.email)
+
+        if(!user.active){
+            throw UserDisabledException(request.email)
+        }
 
         if (user.forcePasswordChange) {
             throw PasswordChangeRequiredException()

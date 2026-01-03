@@ -10,7 +10,7 @@ interface UserAdminService {
 
     fun updateUser(userId: Long, request: UpdateUserRequest): UserResponse
 
-    fun deleteUser(userId: Long)
+    fun deleteUser(adminUserId: Long, userId: Long)
 
     fun updateUserRoles( adminId: Long, targetUserId: Long, request: UpdateUserRolesRequest): UserResponse
 

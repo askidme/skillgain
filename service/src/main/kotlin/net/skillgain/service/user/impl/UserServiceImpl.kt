@@ -17,6 +17,7 @@ class UserServiceImpl(
     override fun findAll(): List<User> {
         return userRepository.findAll()
     }
+
     @Transactional(readOnly = true)
     override fun findById(userId: Long): User =
         userRepository.findById(userId).orElseThrow { UserNotFoundException(userId) }
@@ -33,8 +34,11 @@ class UserServiceImpl(
 
     override fun save(user: User): User = userRepository.save(user)
 
-    override fun delete(user: User) = userRepository.delete(user)
+    override fun delete(adminUserId: Long, user: User) = user.markDeleted(adminUserId)
 
-    override fun delete(userId: Long) = userRepository.deleteById(userId)
+    override fun delete(adminUserId: Long, userId: Long) {
+        val user = userRepository.findById(userId).orElseThrow { UserNotFoundException(userId) }
+        user.markDeleted(adminUserId)
+    }
 
 }

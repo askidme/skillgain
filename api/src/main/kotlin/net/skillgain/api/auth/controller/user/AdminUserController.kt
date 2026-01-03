@@ -30,8 +30,8 @@ class AdminUserController(
         userAdminService.updateUser(id, request)
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long): ResponseEntity<Void> =
-        ResponseEntity.noContent().also { userAdminService.deleteUser(id) }.build()
+    fun delete(@PathVariable id: Long, @AuthenticationPrincipal principal: CustomUserPrincipal): ResponseEntity<Void> =
+        ResponseEntity.noContent().also { userAdminService.deleteUser(principal.userId, id) }.build()
 
 
     @PutMapping("/{id}/roles")

@@ -47,7 +47,7 @@ class UserAdminServiceImpl(
         return userService.save(request.toUser(user)).toResponse()
     }
 
-    override fun deleteUser(userId: Long) = userService.delete(userId)
+    override fun deleteUser(adminUserId: Long, userId: Long) = userService.delete(adminUserId, userId)
 
     override fun updateUserRoles(adminId: Long, targetUserId: Long, request: UpdateUserRolesRequest): UserResponse {
 
