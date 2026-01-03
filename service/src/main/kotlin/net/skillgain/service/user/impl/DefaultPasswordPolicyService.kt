@@ -1,12 +1,18 @@
 package net.skillgain.service.user.impl
 
+import net.skillgain.domain.entity.user.User
 import net.skillgain.exception.domain.user.PasswordException
 import net.skillgain.exception.domain.user.code.PasswordExceptionCode
+import net.skillgain.persistence.repository.user.UserPasswordHistoryRepository
 import net.skillgain.service.user.PasswordPolicyService
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class DefaultPasswordPolicyService : PasswordPolicyService {
+class DefaultPasswordPolicyService(
+    private val passwordEncoder: PasswordEncoder,
+    private val passwordHistoryRepository: UserPasswordHistoryRepository
+) : PasswordPolicyService {
 
     companion object {
         private const val MIN_PASSWORD_LENGTH = 8
@@ -22,6 +28,15 @@ class DefaultPasswordPolicyService : PasswordPolicyService {
 
         if (!isValid) {
             throw PasswordException(PasswordExceptionCode.WEAK_PASSWORD)
+        }
+    }
+
+    override fun validateNotReused(user: User, rawPassword: String) {
+        val lastPasswords =
+            passwordHistoryRepository.findTop3ByUserOrderByCreatedAtDesc(user)
+
+        if (lastPasswords.any { passwordEncoder.matches(rawPassword, it.passwordHash) }) {
+            throw PasswordException(PasswordExceptionCode.PASSWORD_REUSE_NOT_ALLOWED)
         }
     }
 }

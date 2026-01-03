@@ -50,7 +50,7 @@ CREATE TABLE user_invite_tokens
             REFERENCES users (id),
 
     CONSTRAINT fk_user_invite_tokens_deleted_by
-        FOREIGN KEY (deleted_by) REFERENCES users(id)
+        FOREIGN KEY (deleted_by) REFERENCES users (id)
 );
 
 -- ============================================

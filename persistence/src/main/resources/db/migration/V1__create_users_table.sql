@@ -49,11 +49,11 @@ CREATE TABLE users
         FOREIGN KEY (updated_by) REFERENCES users (id),
 
     CONSTRAINT fk_users_deleted_by
-        FOREIGN KEY (deleted_by) REFERENCES users(id)
+        FOREIGN KEY (deleted_by) REFERENCES users (id)
 );
 
-CREATE INDEX idx_users_deleted_at ON users(deleted_at);
-CREATE INDEX idx_users_deleted_by ON users(deleted_by);
+CREATE INDEX idx_users_deleted_at ON users (deleted_at);
+CREATE INDEX idx_users_deleted_by ON users (deleted_by);
 
 CREATE TABLE roles
 (

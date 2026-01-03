@@ -2,6 +2,7 @@ package net.skillgain.service.user.impl
 
 
 import net.skillgain.domain.entity.user.UserInviteToken
+import net.skillgain.domain.entity.user.UserPasswordHistory
 import net.skillgain.domain.entity.user.UserRole
 import net.skillgain.domain.mapper.user.toUser
 import net.skillgain.domain.model.user.AuthProvider
@@ -15,6 +16,7 @@ import net.skillgain.exception.domain.user.code.PasswordExceptionCode
 import net.skillgain.exception.domain.user.code.UserExceptionCode
 import net.skillgain.exception.domain.user.code.UserRoleExceptionCode
 import net.skillgain.persistence.repository.user.RoleRepository
+import net.skillgain.persistence.repository.user.UserPasswordHistoryRepository
 import net.skillgain.security.jwt.JwtService
 import net.skillgain.service.email.EmailService
 import net.skillgain.service.user.AuthService
@@ -35,7 +37,8 @@ class AuthServiceImpl(
     private val passwordEncoder: PasswordEncoder,
     private val emailService: EmailService,
     private val jwtService: JwtService,
-    private val passwordPolicyService: PasswordPolicyService
+    private val passwordPolicyService: PasswordPolicyService,
+    private val passwordHistoryRepository: UserPasswordHistoryRepository
 ) : AuthService {
 
     override fun register(request: AuthRequest): String {
@@ -48,9 +51,12 @@ class AuthServiceImpl(
         val roleUser = roleRepository.findByName(UserRole.ROLE_USER.name)
             ?: throw UserRoleException(UserRoleExceptionCode.ROLE_NOT_FOUND, arrayOf(UserRole.ROLE_USER.name))
 
-        val user = request.toUser(roleUser, passwordEncoder.encode(request.password))
+        val encodedPassword = passwordEncoder.encode(request.password)
+        val user = request.toUser(roleUser, encodedPassword)
 
         userService.save(user)
+
+        passwordHistoryRepository.save(UserPasswordHistory(user = user, passwordHash = encodedPassword))
 
         return "User registered successfully"
     }
@@ -58,7 +64,7 @@ class AuthServiceImpl(
     override fun login(request: AuthRequest): AuthResponse {
         val user = userService.findByEmail(request.email)
 
-        if(!user.active){
+        if (!user.active) {
             throw UserException(UserExceptionCode.USER_DISABLED, arrayOf(request.email))
         }
 
@@ -115,11 +121,17 @@ class AuthServiceImpl(
             throw InviteTokenException(InviteTokenExceptionCode.INVITE_TOKEN_EXPIRED)
         }
 
+        passwordPolicyService.validateNotReused(tokenEntity.user, request.password)
+
+        val encodedPassword = passwordEncoder.encode(request.password)
+
         tokenEntity.user.apply {
-            password = passwordEncoder.encode(request.password)
+            password = encodedPassword
             forcePasswordChange = false
             emailVerified = true
         }
+
+        passwordHistoryRepository.save(UserPasswordHistory(user = tokenEntity.user, passwordHash = encodedPassword))
 
         tokenEntity.used = true
 

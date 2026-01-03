@@ -1,5 +1,6 @@
 package net.skillgain.service.user.impl
 
+import net.skillgain.domain.entity.user.UserPasswordHistory
 import net.skillgain.domain.mapper.user.toProfileResponse
 import net.skillgain.domain.mapper.user.toUser
 import net.skillgain.domain.model.user.profile.ChangePasswordRequest
@@ -9,6 +10,7 @@ import net.skillgain.exception.domain.user.PasswordException
 import net.skillgain.exception.domain.user.UserException
 import net.skillgain.exception.domain.user.code.PasswordExceptionCode
 import net.skillgain.exception.domain.user.code.UserExceptionCode
+import net.skillgain.persistence.repository.user.UserPasswordHistoryRepository
 import net.skillgain.service.user.PasswordPolicyService
 import net.skillgain.service.user.UserProfileService
 import net.skillgain.service.user.UserService
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional
 class UserProfileServiceImpl(
     private val userService: UserService,
     private val passwordEncoder: PasswordEncoder,
+    private val passwordHistoryRepository: UserPasswordHistoryRepository,
     private val passwordPolicyService: PasswordPolicyService
 ) : UserProfileService {
 
@@ -45,11 +48,15 @@ class UserProfileServiceImpl(
             throw UserException(UserExceptionCode.INVALID_USER_CREDENTIALS)
         }
 
+        passwordPolicyService.validateNotReused(user, request.newPassword)
+
+        val encodedPassword = passwordEncoder.encode(request.currentPassword)
         userService.save(
             user.apply {
-                password = passwordEncoder.encode(request.currentPassword)
+                password = encodedPassword
                 forcePasswordChange = false
             }
         )
+        passwordHistoryRepository.save(UserPasswordHistory(user = user,passwordHash = encodedPassword))
     }
 }
