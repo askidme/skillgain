@@ -20,17 +20,17 @@ class UserServiceImpl(
 
     @Transactional(readOnly = true)
     override fun findById(userId: Long): User =
-        userRepository.findById(userId).orElseThrow { UserNotFoundException(userId) }
+        userRepository.findByIdAndDeletedAtIsNull(userId) ?: throw UserNotFoundException(userId)
 
     @Transactional(readOnly = true)
-    override fun findByEmail(email: String): User = userRepository.findByEmail(email)
+    override fun findByEmail(email: String): User = userRepository.findByEmailAndDeletedAtIsNull(email)
         ?: throw UserNotFoundException(email)
 
     @Transactional(readOnly = true)
-    override fun getByEmail(email: String): User? = userRepository.findByEmail(email)
+    override fun getByEmail(email: String): User? = userRepository.findByEmailAndDeletedAtIsNull(email)
 
     @Transactional(readOnly = true)
-    override fun existsByEmail(email: String): Boolean = userRepository.existsByEmail(email)
+    override fun existsByEmail(email: String): Boolean = userRepository.existsByEmailAndDeletedAtIsNull(email)
 
     override fun save(user: User): User = userRepository.save(user)
 
@@ -39,6 +39,10 @@ class UserServiceImpl(
     override fun delete(adminUserId: Long, userId: Long) {
         val user = userRepository.findById(userId).orElseThrow { UserNotFoundException(userId) }
         user.markDeleted(adminUserId)
+    }
+
+    override fun findByIdIncludingDeleted(userId: Long): User {
+        return userRepository.findById(userId).orElseThrow { UserNotFoundException(userId) }
     }
 
 }

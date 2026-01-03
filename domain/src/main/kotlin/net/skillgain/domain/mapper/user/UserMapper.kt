@@ -23,7 +23,8 @@ fun User.toResponse() = UserResponse(
     roles = roles.map { it.name }.toSet(),
     active = active,
     authProvider = authProvider,
-    createdAt = createdAt.toString()
+    createdAt = createdAt.toString(),
+    deletedAt = deletedAt.toString(),
 )
 
 fun User.toProfileResponse() = UserProfileResponse(

@@ -19,4 +19,6 @@ interface UserService {
     fun delete(adminUserId: Long,user: User)
 
     fun delete(adminUserId: Long,userId: Long)
+
+     fun findByIdIncludingDeleted(userId: Long): User
 }

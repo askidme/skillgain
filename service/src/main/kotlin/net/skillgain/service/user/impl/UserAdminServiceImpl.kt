@@ -4,29 +4,30 @@ import net.skillgain.domain.entity.user.UserRole
 import net.skillgain.domain.mapper.user.toResponse
 import net.skillgain.domain.mapper.user.toUser
 import net.skillgain.domain.model.user.AuthProvider
-import net.skillgain.domain.model.user.admin.CreateUserRequest
-import net.skillgain.domain.model.user.admin.UpdateUserRequest
-import net.skillgain.domain.model.user.admin.UpdateUserRolesRequest
-import net.skillgain.domain.model.user.admin.UserResponse
+import net.skillgain.domain.model.user.admin.*
 import net.skillgain.exception.domain.user.role.EmptyUserRolesException
 import net.skillgain.exception.domain.user.role.InvalidUserRolesException
 import net.skillgain.exception.domain.user.role.RoleModificationException
 import net.skillgain.exception.domain.user.role.RoleNotFoundException
 import net.skillgain.exception.domain.user.user.UserAlreadyExistsException
 import net.skillgain.persistence.repository.user.RoleRepository
+import net.skillgain.persistence.repository.user.UserRepository
 import net.skillgain.service.user.UserAdminService
 import net.skillgain.service.user.UserInviteTokenService
 import net.skillgain.service.user.UserService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserAdminServiceImpl(
     private val userService: UserService,
     private val roleRepository: RoleRepository,
-    private val inviteTokenService: UserInviteTokenService
+    private val inviteTokenService: UserInviteTokenService,
+    private val userRepository: UserRepository
 
 ) : UserAdminService {
 
+    @Transactional
     override fun createUser(request: CreateUserRequest): UserResponse {
 
         if (userService.existsByEmail(request.email)) {
@@ -41,14 +42,17 @@ class UserAdminServiceImpl(
         return userService.save(user).also { inviteTokenService.sendInviteToken(it) }.toResponse()
     }
 
+    @Transactional
     override fun updateUser(userId: Long, request: UpdateUserRequest): UserResponse {
         val user = userService.findById(userId)
 
         return userService.save(request.toUser(user)).toResponse()
     }
 
+    @Transactional
     override fun deleteUser(adminUserId: Long, userId: Long) = userService.delete(adminUserId, userId)
 
+    @Transactional
     override fun updateUserRoles(adminId: Long, targetUserId: Long, request: UpdateUserRolesRequest): UserResponse {
 
         if (request.roles.isEmpty()) {
@@ -74,4 +78,27 @@ class UserAdminServiceImpl(
     }
 
     override fun listUsers(): List<UserResponse> = userService.findAll().map { it.toResponse() }
+
+    @Transactional
+    override fun restoreUser(userId: Long): UserResponse {
+        val user = userService.findByIdIncludingDeleted(userId)
+
+        if(!user.isDeleted()){
+            return user.toResponse()
+        }
+
+        user.deletedAt = null
+
+        return user.toResponse()
+    }
+
+    @Transactional
+    override fun updateActivation(userId: Long, request: UpdateUserActivationRequest): UserResponse {
+        val user = userService.findById(userId)
+
+        user.active = request.active
+
+        userService.save(user)
+        return user.toResponse()
+    }
 }

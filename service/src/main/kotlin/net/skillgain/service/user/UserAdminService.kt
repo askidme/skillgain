@@ -1,9 +1,6 @@
 package net.skillgain.service.user
 
-import net.skillgain.domain.model.user.admin.CreateUserRequest
-import net.skillgain.domain.model.user.admin.UpdateUserRequest
-import net.skillgain.domain.model.user.admin.UpdateUserRolesRequest
-import net.skillgain.domain.model.user.admin.UserResponse
+import net.skillgain.domain.model.user.admin.*
 
 interface UserAdminService {
     fun createUser(request: CreateUserRequest): UserResponse
@@ -15,4 +12,8 @@ interface UserAdminService {
     fun updateUserRoles( adminId: Long, targetUserId: Long, request: UpdateUserRolesRequest): UserResponse
 
     fun listUsers(): List<UserResponse>
+
+    fun restoreUser(userId: Long): UserResponse
+
+    fun updateActivation(userId: Long,request: UpdateUserActivationRequest): UserResponse
 }

@@ -8,5 +8,6 @@ data class UserResponse(
     val roles: Set<String>,
     val active: Boolean,
     val authProvider: AuthProvider,
-    val createdAt: String
+    val createdAt: String,
+    val deletedAt: String
 )

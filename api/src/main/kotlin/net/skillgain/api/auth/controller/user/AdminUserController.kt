@@ -1,10 +1,7 @@
 package net.skillgain.api.auth.controller.user
 
 import jakarta.validation.Valid
-import net.skillgain.domain.model.user.admin.CreateUserRequest
-import net.skillgain.domain.model.user.admin.UpdateUserRequest
-import net.skillgain.domain.model.user.admin.UpdateUserRolesRequest
-import net.skillgain.domain.model.user.admin.UserResponse
+import net.skillgain.domain.model.user.admin.*
 import net.skillgain.security.auth.CustomUserPrincipal
 import net.skillgain.service.user.UserAdminService
 import org.springframework.http.HttpStatus
@@ -43,4 +40,11 @@ class AdminUserController(
 
     @GetMapping
     fun list(): List<UserResponse> = userAdminService.listUsers()
+
+    @PutMapping("/{id}/restore")
+    fun restoreUser(@PathVariable id: Long): UserResponse = userAdminService.restoreUser(id)
+
+    @PutMapping("/{id}/activation")
+    fun updateActivation(@PathVariable id: Long, @RequestBody request: UpdateUserActivationRequest): UserResponse =
+        userAdminService.updateActivation(id, request)
 }

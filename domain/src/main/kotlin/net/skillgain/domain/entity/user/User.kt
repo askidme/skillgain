@@ -4,13 +4,11 @@ import jakarta.persistence.*
 import net.skillgain.domain.entity.AuditableEntity
 import net.skillgain.domain.model.user.AuthProvider
 import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "users")
-@SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE users SET deleted_at = now() WHERE id = ?")
 class User(
 
