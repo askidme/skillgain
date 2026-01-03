@@ -5,11 +5,10 @@ import net.skillgain.domain.mapper.user.toResponse
 import net.skillgain.domain.mapper.user.toUser
 import net.skillgain.domain.model.user.AuthProvider
 import net.skillgain.domain.model.user.admin.*
-import net.skillgain.exception.domain.user.role.EmptyUserRolesException
-import net.skillgain.exception.domain.user.role.InvalidUserRolesException
-import net.skillgain.exception.domain.user.role.RoleModificationException
-import net.skillgain.exception.domain.user.role.RoleNotFoundException
-import net.skillgain.exception.domain.user.user.UserAlreadyExistsException
+import net.skillgain.exception.domain.user.UserException
+import net.skillgain.exception.domain.user.UserRoleException
+import net.skillgain.exception.domain.user.code.UserExceptionCode
+import net.skillgain.exception.domain.user.code.UserRoleExceptionCode
 import net.skillgain.persistence.repository.user.RoleRepository
 import net.skillgain.persistence.repository.user.UserRepository
 import net.skillgain.service.user.UserAdminService
@@ -31,11 +30,11 @@ class UserAdminServiceImpl(
     override fun createUser(request: CreateUserRequest): UserResponse {
 
         if (userService.existsByEmail(request.email)) {
-            throw UserAlreadyExistsException(request.email)
+            throw UserException(UserExceptionCode.EMAIL_ALREADY_EXISTS, arrayOf(request.email))
         }
 
         val roleUser = roleRepository.findByName(UserRole.ROLE_USER.name)
-            ?: throw RoleNotFoundException(UserRole.ROLE_USER.name)
+            ?: throw UserRoleException(UserRoleExceptionCode.ROLE_NOT_FOUND, arrayOf(UserRole.ROLE_USER.name))
 
         val user = request.toUser(AuthProvider.LOCAL, mutableSetOf(roleUser))
 
@@ -56,11 +55,11 @@ class UserAdminServiceImpl(
     override fun updateUserRoles(adminId: Long, targetUserId: Long, request: UpdateUserRolesRequest): UserResponse {
 
         if (request.roles.isEmpty()) {
-            throw EmptyUserRolesException()
+            throw UserRoleException(UserRoleExceptionCode.EMPTY_USER_ROLES)
         }
 
         if (adminId == targetUserId) {
-            throw RoleModificationException()
+            throw UserRoleException(UserRoleExceptionCode.ROLE_MODIFICATION_NOT_ALLOWED)
         }
 
         val user = userService.findById(targetUserId)
@@ -68,7 +67,7 @@ class UserAdminServiceImpl(
         val roles = roleRepository.findAllByNameIn(request.roles)
 
         if (roles.size != request.roles.size) {
-            throw InvalidUserRolesException()
+            throw UserRoleException(UserRoleExceptionCode.INVALID_USER_ROLES)
         }
 
         user.roles.clear()
@@ -83,7 +82,7 @@ class UserAdminServiceImpl(
     override fun restoreUser(userId: Long): UserResponse {
         val user = userService.findByIdIncludingDeleted(userId)
 
-        if(!user.isDeleted()){
+        if (!user.isDeleted()) {
             return user.toResponse()
         }
 

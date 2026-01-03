@@ -6,9 +6,8 @@ import jakarta.validation.Path
 import net.skillgain.common.i18n.MessageConfig
 import net.skillgain.common.i18n.MessageResolver
 import net.skillgain.exception.VerificationHelper.assertCommonProperties
-import net.skillgain.exception.domain.user.user.InvalidUserCredentialsException
-import net.skillgain.exception.domain.user.UserExceptionCode
-import net.skillgain.exception.domain.user.user.UserNotFoundException
+import net.skillgain.exception.domain.user.UserException
+import net.skillgain.exception.domain.user.code.UserExceptionCode
 import net.skillgain.exception.model.ProblemType
 import net.skillgain.exception.model.ValidationError
 import org.assertj.core.api.Assertions.assertThat
@@ -96,10 +95,10 @@ class ProblemDetailFactoryTest {
     }
 
     @Test
-    fun `should create business problem detail when user not found`(){
+    fun `should create business problem detail when user not found`() {
 
         //Arrange
-        val userNotFound = UserNotFoundException(123L)
+        val userNotFound = UserException(UserExceptionCode.USER_ID_NOT_FOUND, arrayOf(123L))
 
         //Act
         val detail = sut.businessProblem(userNotFound)
@@ -109,14 +108,14 @@ class ProblemDetailFactoryTest {
         assertThat(detail.title).isEqualTo("User not found")
         assertThat(detail.instance?.toString()).isEqualTo("/api/test")
         assertThat(detail.detail).isEqualTo("User with id 123 not found.")
-        assertCommonProperties(detail, UserExceptionCode.USER_NOT_FOUND.name)
+        assertCommonProperties(detail, UserExceptionCode.USER_ID_NOT_FOUND.name)
     }
 
     @Test
-    fun `should create business problem detail when invalid user credentials`(){
+    fun `should create business problem detail when invalid user credentials`() {
 
         //Arrange
-        val userNotFound = InvalidUserCredentialsException()
+        val userNotFound = UserException(UserExceptionCode.INVALID_USER_CREDENTIALS)
 
         //Act
         val detail = sut.businessProblem(userNotFound)

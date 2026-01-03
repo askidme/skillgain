@@ -6,18 +6,19 @@ import net.skillgain.domain.entity.user.UserRole
 import net.skillgain.domain.mapper.user.toUser
 import net.skillgain.domain.model.user.AuthProvider
 import net.skillgain.domain.model.user.auth.*
-import net.skillgain.exception.domain.user.invite.InviteTokenAlreadyUsedException
-import net.skillgain.exception.domain.user.invite.InviteTokenExpiredException
-import net.skillgain.exception.domain.user.password.PasswordChangeRequiredException
-import net.skillgain.exception.domain.user.password.PasswordMismatchException
-import net.skillgain.exception.domain.user.role.RoleNotFoundException
-import net.skillgain.exception.domain.user.user.InvalidUserCredentialsException
-import net.skillgain.exception.domain.user.user.UserAlreadyExistsException
-import net.skillgain.exception.domain.user.user.UserDisabledException
+import net.skillgain.exception.domain.user.InviteTokenException
+import net.skillgain.exception.domain.user.PasswordException
+import net.skillgain.exception.domain.user.UserException
+import net.skillgain.exception.domain.user.UserRoleException
+import net.skillgain.exception.domain.user.code.InviteTokenExceptionCode
+import net.skillgain.exception.domain.user.code.PasswordExceptionCode
+import net.skillgain.exception.domain.user.code.UserExceptionCode
+import net.skillgain.exception.domain.user.code.UserRoleExceptionCode
 import net.skillgain.persistence.repository.user.RoleRepository
 import net.skillgain.security.jwt.JwtService
 import net.skillgain.service.email.EmailService
 import net.skillgain.service.user.AuthService
+import net.skillgain.service.user.PasswordPolicyService
 import net.skillgain.service.user.UserInviteTokenService
 import net.skillgain.service.user.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -33,16 +34,19 @@ class AuthServiceImpl(
     private val inviteTokenService: UserInviteTokenService,
     private val passwordEncoder: PasswordEncoder,
     private val emailService: EmailService,
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val passwordPolicyService: PasswordPolicyService
 ) : AuthService {
 
     override fun register(request: AuthRequest): String {
         if (userService.existsByEmail(request.email)) {
-            throw UserAlreadyExistsException(request.email)
+            throw UserException(UserExceptionCode.EMAIL_ALREADY_EXISTS, arrayOf(request.email))
         }
 
+        passwordPolicyService.validate(request.password)
+
         val roleUser = roleRepository.findByName(UserRole.ROLE_USER.name)
-            ?: throw RoleNotFoundException(UserRole.ROLE_USER.name)
+            ?: throw UserRoleException(UserRoleExceptionCode.ROLE_NOT_FOUND, arrayOf(UserRole.ROLE_USER.name))
 
         val user = request.toUser(roleUser, passwordEncoder.encode(request.password))
 
@@ -55,15 +59,15 @@ class AuthServiceImpl(
         val user = userService.findByEmail(request.email)
 
         if(!user.active){
-            throw UserDisabledException(request.email)
+            throw UserException(UserExceptionCode.USER_DISABLED, arrayOf(request.email))
         }
 
         if (user.forcePasswordChange) {
-            throw PasswordChangeRequiredException()
+            throw PasswordException(PasswordExceptionCode.PASSWORD_CHANGE_REQUIRED)
         }
 
         if (!passwordEncoder.matches(request.password, user.password)) {
-            throw InvalidUserCredentialsException()
+            throw UserException(UserExceptionCode.INVALID_USER_CREDENTIALS)
         }
 
         val token = jwtService.generateToken(user)
@@ -96,17 +100,19 @@ class AuthServiceImpl(
     override fun finalizePassword(request: FinalizePasswordRequest): FinalizePasswordResponse {
 
         if (request.password != request.confirmPassword) {
-            throw PasswordMismatchException()
+            throw PasswordException(PasswordExceptionCode.PASSWORD_MISMATCH)
         }
+
+        passwordPolicyService.validate(request.password)
 
         val tokenEntity = inviteTokenService.findByToken(request.token)
 
         if (tokenEntity.used) {
-            throw InviteTokenAlreadyUsedException()
+            throw InviteTokenException(InviteTokenExceptionCode.INVITE_TOKEN_ALREADY_USED)
         }
 
         if (tokenEntity.expiresAt.isBefore(LocalDateTime.now())) {
-            throw InviteTokenExpiredException()
+            throw InviteTokenException(InviteTokenExceptionCode.INVITE_TOKEN_EXPIRED)
         }
 
         tokenEntity.user.apply {

@@ -6,7 +6,7 @@ import net.skillgain.common.i18n.MessageConfig
 import net.skillgain.common.i18n.MessageResolver
 import net.skillgain.exception.VerificationHelper.assertCommonProperties
 import net.skillgain.exception.core.BusinessException
-import net.skillgain.exception.domain.user.UserExceptionCode
+import net.skillgain.exception.domain.user.code.UserExceptionCode
 import net.skillgain.exception.model.ProblemType
 import net.skillgain.exception.problem.ProblemDetailBuilder
 import net.skillgain.exception.problem.ProblemDetailFactory

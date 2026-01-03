@@ -1,0 +1,12 @@
+package net.skillgain.exception.domain.user
+
+import net.skillgain.exception.core.BusinessException
+import net.skillgain.exception.domain.user.code.UserExceptionCode
+
+class UserException (errorCode: UserExceptionCode, messageArgs: Array<Any> = emptyArray()) : BusinessException(
+    status = errorCode.status(),
+    errorCode = errorCode,
+    messageKey = errorCode.detail(),
+    titleKey = errorCode.title(),
+    messageArgs = messageArgs
+)

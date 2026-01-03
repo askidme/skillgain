@@ -2,7 +2,8 @@ package net.skillgain.service.user.impl
 
 import net.skillgain.domain.entity.user.User
 import net.skillgain.domain.entity.user.UserInviteToken
-import net.skillgain.exception.domain.user.invite.InvalidInviteTokenException
+import net.skillgain.exception.domain.user.InviteTokenException
+import net.skillgain.exception.domain.user.code.InviteTokenExceptionCode
 import net.skillgain.persistence.repository.user.InviteTokenRepository
 import net.skillgain.service.email.EmailService
 import net.skillgain.service.user.UserInviteTokenService
@@ -20,7 +21,8 @@ class UserInviteTokenServiceImpl(
 
 
     override fun findByToken(token: String): UserInviteToken =
-        inviteTokenRepository.findByToken(token) ?: throw InvalidInviteTokenException()
+        inviteTokenRepository.findByToken(token)
+            ?: throw InviteTokenException(InviteTokenExceptionCode.INVALID_INVITE_TOKEN)
 
 
     override fun sendInviteToken(user: User) {

@@ -5,8 +5,11 @@ import net.skillgain.domain.mapper.user.toUser
 import net.skillgain.domain.model.user.profile.ChangePasswordRequest
 import net.skillgain.domain.model.user.profile.UpdateUserProfileRequest
 import net.skillgain.domain.model.user.profile.UserProfileResponse
-import net.skillgain.exception.domain.user.password.PasswordMismatchException
-import net.skillgain.exception.domain.user.user.InvalidUserCredentialsException
+import net.skillgain.exception.domain.user.PasswordException
+import net.skillgain.exception.domain.user.UserException
+import net.skillgain.exception.domain.user.code.PasswordExceptionCode
+import net.skillgain.exception.domain.user.code.UserExceptionCode
+import net.skillgain.service.user.PasswordPolicyService
 import net.skillgain.service.user.UserProfileService
 import net.skillgain.service.user.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -16,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class UserProfileServiceImpl(
     private val userService: UserService,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val passwordPolicyService: PasswordPolicyService
 ) : UserProfileService {
 
     @Transactional
@@ -30,13 +34,15 @@ class UserProfileServiceImpl(
     override fun changePassword(userId: Long, request: ChangePasswordRequest) {
 
         if (request.newPassword != request.confirmPassword) {
-            throw PasswordMismatchException()
+            throw PasswordException(PasswordExceptionCode.PASSWORD_MISMATCH)
         }
+
+        passwordPolicyService.validate(request.confirmPassword)
 
         val user = userService.findById(userId)
 
         if (!passwordEncoder.matches(request.currentPassword, user.password)) {
-            throw InvalidUserCredentialsException()
+            throw UserException(UserExceptionCode.INVALID_USER_CREDENTIALS)
         }
 
         userService.save(
