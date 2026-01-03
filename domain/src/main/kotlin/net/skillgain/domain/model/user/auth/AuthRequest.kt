@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Size
 
 data class  AuthRequest(
 
-    @field:NotBlank(message = "Username cannot be blank")
-    @field:Email(message = "Email must be valid")
+    @field:NotBlank(message = "{validation.user.email.required}")
+    @field:Email(message = "{validation.user.email.invalid}")
     val email: String,
 
-    @field:NotBlank(message = "Password cannot be blank")
-    @field:Size(min = 8, max = 100, message = "Password must be at least 8 characters")
+    @field:NotBlank(message = "{validation.user.password.required}")
+    @field:Size(min = 8, max = 64, message = "{validation.user.password.size}")
     val password: String
 )

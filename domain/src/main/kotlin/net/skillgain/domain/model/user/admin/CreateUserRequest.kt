@@ -6,16 +6,16 @@ import jakarta.validation.constraints.Size
 
 data class  CreateUserRequest(
 
-    @field:NotBlank(message = "Email is required")
-    @field:Email(message = "Email must be valid")
+    @field:NotBlank(message = "{validation.user.email.required}")
+    @field:Email(message = "{validation.user.email.invalid}")
     val email: String,
 
-    @field:NotBlank(message = "First name is required")
-    @field:Size(max = 100, message = "First name must be at most 100 characters")
+    @field:NotBlank(message = "{validation.user.first_name.required}")
+    @field:Size(max = 100, message = "{validation.user.first_name.size}")
     val firstName: String,
 
-    @field:NotBlank(message = "Last name is required")
-    @field:Size(max = 100, message = "Last name must be at most 100 characters")
+    @field:NotBlank(message = "{validation.user.first_name.required}")
+    @field:Size(max = 100, message = "{validation.user.first_name.size}")
     val lastName: String,
     val active: Boolean = true
 )

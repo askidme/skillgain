@@ -105,7 +105,7 @@ class ProblemDetailFactoryTest {
 
         //Assert
         assertThat(detail.status).isEqualTo(404)
-        assertThat(detail.title).isEqualTo("User not found")
+        assertThat(detail.title).isEqualTo("User id not found")
         assertThat(detail.instance?.toString()).isEqualTo("/api/test")
         assertThat(detail.detail).isEqualTo("User with id 123 not found.")
         assertCommonProperties(detail, UserExceptionCode.USER_ID_NOT_FOUND.name)
