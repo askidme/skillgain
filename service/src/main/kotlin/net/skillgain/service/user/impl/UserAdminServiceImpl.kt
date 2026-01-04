@@ -14,6 +14,8 @@ import net.skillgain.persistence.repository.user.UserRepository
 import net.skillgain.service.user.UserAdminService
 import net.skillgain.service.user.UserInviteTokenService
 import net.skillgain.service.user.UserService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -76,7 +78,7 @@ class UserAdminServiceImpl(
         return userService.save(user).toResponse()
     }
 
-    override fun listUsers(): List<UserResponse> = userService.findAll().map { it.toResponse() }
+    override fun listUsers(pageable: Pageable): Page<UserResponse> = userService.findAll(pageable).map { it.toResponse() }
 
     @Transactional
     override fun restoreUser(userId: Long): UserResponse {

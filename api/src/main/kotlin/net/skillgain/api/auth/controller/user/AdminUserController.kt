@@ -1,9 +1,13 @@
 package net.skillgain.api.auth.controller.user
 
 import jakarta.validation.Valid
+import net.skillgain.domain.mapper.toPagedResponse
+import net.skillgain.domain.model.PagedResponse
 import net.skillgain.domain.model.user.admin.*
 import net.skillgain.security.auth.CustomUserPrincipal
 import net.skillgain.service.user.UserAdminService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
@@ -39,7 +43,7 @@ class AdminUserController(
     ): UserResponse = userAdminService.updateUserRoles(principal.userId, id, request)
 
     @GetMapping
-    fun list(): List<UserResponse> = userAdminService.listUsers()
+    fun list( pageable: Pageable): PagedResponse<UserResponse> = userAdminService.listUsers(pageable).toPagedResponse()
 
     @PutMapping("/{id}/restore")
     fun restoreUser(@PathVariable id: Long): UserResponse = userAdminService.restoreUser(id)

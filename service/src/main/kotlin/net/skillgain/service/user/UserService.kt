@@ -1,10 +1,12 @@
 package net.skillgain.service.user
 
 import net.skillgain.domain.entity.user.User
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface UserService {
 
-    fun findAll(): List<User>
+    fun findAll(pageable: Pageable): Page<User>
 
     fun findById(userId: Long): User
 

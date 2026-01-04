@@ -1,6 +1,8 @@
 package net.skillgain.service.user
 
 import net.skillgain.domain.model.user.admin.*
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface UserAdminService {
     fun createUser(request: CreateUserRequest): UserResponse
@@ -11,7 +13,7 @@ interface UserAdminService {
 
     fun updateUserRoles( adminId: Long, targetUserId: Long, request: UpdateUserRolesRequest): UserResponse
 
-    fun listUsers(): List<UserResponse>
+    fun listUsers(pageable: Pageable): Page<UserResponse>
 
     fun restoreUser(userId: Long): UserResponse
 

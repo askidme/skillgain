@@ -6,6 +6,8 @@ import net.skillgain.exception.domain.user.UserException
 import net.skillgain.exception.domain.user.code.UserExceptionCode
 import net.skillgain.persistence.repository.user.UserRepository
 import net.skillgain.service.user.UserService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,8 +17,8 @@ class UserServiceImpl(
     private val userRepository: UserRepository
 ) : UserService {
 
-    override fun findAll(): List<User> {
-        return userRepository.findAll()
+    override fun findAll(pageable: Pageable): Page<User> {
+        return userRepository.findAll(pageable)
     }
 
     @Transactional(readOnly = true)
